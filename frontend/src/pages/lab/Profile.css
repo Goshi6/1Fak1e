@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
+
+.clean-profile {
+    max-width: 1700px;
+    margin: 15px auto;
+    padding: 24px;
+    background: none;
+    color: #ffffff;
+    /* если навбар фиксированный */
+    padding-top: 64px;
+}
+
+/* Картинка пользователя */
+.profile-avatar {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: #222;
+    object-fit: cover;
+    border: 2px solid #232323;
+    display: block;
+}
+
+/* Горизонтальный блок (аватар слева, блок справа) */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 1.2rem;
+}
+
+/* Вертикальный столбик для ника и id */
+.profile-main-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* <-- строго по левому краю! */
+    justify-content: center;
+    width: fit-content;
+    /* под контент */
+    margin-left: 0;
+    /* можно менять, если хочется отступа */
+}
+
+/* Ник (или ссылка Faceit) */
+.profile-nickname {
+    font-size: 25px;
+    margin-bottom: -5px;
+    padding: 0;
+    text-align: left;
+    /* <-- текст строго слева! */
+    width: auto;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+}
+
+.profile-nickname a {
+    display: inline;
+    text-align: left;
+    color: #ffaf35;
+    text-decoration: none;
+}
+
+/* ID */
+.profile-id {
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    color: #B1DDF1;
+    text-align: left;
+    /* <-- тоже строго слева */
+    width: auto;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+}

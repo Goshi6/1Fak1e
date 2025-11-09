@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    container_name: fak1e_backend
+    ports:
+      - "8001:8000"
+    restart: unless-stopped
+    volumes:
+      - ./backend/app:/app/app
+    environment:
+      - TZ=Europe/Moscow
+
+  frontend:
+    build: ./frontend
+    container_name: fak1e_frontend
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Moscow
+
+networks:
+  default:
+    name: fak1e_net

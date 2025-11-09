@@ -1,0 +1,53 @@
+.lab-sidebar {
+    width: 200px;
+    background: #000000;
+    border-right: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 64px;
+    /* если LabNavbar выше или ниже — меняй тут */
+    left: 0;
+    height: calc(100vh - 64px);
+    /* чтобы не залезал под нижние элементы */
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.sidebar-menu {
+    flex: 1;
+    padding: 0;
+}
+
+.menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #fff;
+    border-left: 3px solid transparent;
+}
+
+.menu-item:hover {
+    background: #b1ddf118;
+    color: #ffffff;
+    border-left-color: #B1DDF1;
+}
+
+.menu-item.active {
+    background: #b1ddf118;
+    color: #B1DDF1;
+    border-left-color: #B1DDF1;
+}
+
+.menu-item span {
+    font-weight: 500;
+}

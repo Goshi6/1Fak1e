@@ -1,0 +1,91 @@
+/* Faceit.css */
+
+/* === FACEIT ИКОНКА В ПРОФИЛЕ === */
+.faceit-icon-link {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.faceit-icon-link:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.faceit-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* === FACEIT В НАСТРОЙКАХ === */
+.faceit-link-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: #f5f5f5;
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
+
+.faceit-linked-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.faceit-nick-label {
+    font-weight: 600;
+    color: #666;
+}
+
+.faceit-nick-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a73e8;
+}
+
+.unlink-btn {
+    padding: 8px 16px;
+    background: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.unlink-btn:hover {
+    background: #cc0000;
+}
+
+.link-btn {
+    padding: 10px 16px;
+    background: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.link-btn:hover {
+    background: #1557b0;
+}
+
+/* === ПОЗИЦИЯ ДЛЯ ПРОФИЛЯ-КАРТОЧКИ === */
+.profile-header {
+    position: relative;
+}

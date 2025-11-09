@@ -1,0 +1,11 @@
+.lab-page {
+    background: #1a1a1a;
+    color: #ffffff;
+    font-family: Inter, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    /* sidebar и main в линию */
+    margin: 0;
+    padding: 0;
+}

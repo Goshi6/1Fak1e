@@ -1,0 +1,30 @@
+.lab-page {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+}
+
+.lab-sidebar {
+    position: fixed;
+    top: 64px;
+    /* если есть navbar сверху */
+    left: 0;
+    width: 200px;
+    /* ширина сайдбара */
+    height: calc(100vh - 64px);
+    z-index: 1000;
+    background: #000;
+    border-right: 1px solid #333;
+    box-sizing: border-box;
+}
+
+.lab-main {
+    flex: 1 1 0%;
+    margin-left: 200px;
+    /* !!! равно ширине sidebar */
+    /* либо padding-left: 200px; */
+    background: #1a1a1a;
+    padding-top: 10px;
+    min-height: 0;
+    box-sizing: border-box;
+}
