@@ -2,13 +2,13 @@ import React, { useEffect, ChangeEvent } from "react";
 import "./Faceit.css";
 import type { User } from "./UserProfile";
 
-// Замени url, если меняется туннель
+// ОФИЦИАЛЬНЫЕ ОТКРЫТЫЕ URL БЭКЕНДА НА BEGET
 const OAUTH_REDIRECTS: Record<string, string> = {
-    Faceit: "https://early-bats-wave.loca.lt/auth/faceit/redirect",
-    Google: "https://early-bats-wave.loca.lt/auth/google/redirect",
-    Yandex: "https://early-bats-wave.loca.lt/auth/yandex/redirect",
-    Steam: "https://early-bats-wave.loca.lt/auth/steam/redirect",
-    Telegram: "https://early-bats-wave.loca.lt/auth/telegram/redirect",
+    Faceit: "http://155.212.220.11:8001/auth/faceit/redirect",
+    Google: "",
+    Yandex: "",
+    Steam: "",
+    Telegram: "",
 };
 
 type SettingsPageProps = {
