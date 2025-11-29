@@ -16,6 +16,8 @@ export interface User {
     isYandexLinked?: boolean;
     isSteamLinked?: boolean;
     isTelegramLinked?: boolean;
+    steamUrl?: string;
+    telegramUrl?: string;
 }
 
 interface UserProfileProps {
@@ -30,8 +32,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
         ? `https://www.faceit.com/ru/players/${user.faceitNickname}`
         : "";
 
+    // URL для Steam и Telegram (можно формировать или брать из user)
+    const steamProfileUrl = user.steamUrl || (user.isSteamLinked ? "#" : null);
+    const telegramProfileUrl = user.telegramUrl || (user.isTelegramLinked ? "#" : null);
+
     return (
-        <div className="profile-card clean-profile">
+        <div className="profile-card clean-profile" style={{ position: 'relative' }}>
             <div className="profile-header">
                 <img
                     className="profile-avatar"
@@ -45,7 +51,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
                                 href={faceitProfileUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="faceit-linked"
                                 title="Открыть профиль на Faceit"
                             >
                                 {user.faceitNickname}
@@ -65,7 +70,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
                     </div>
                 </div>
 
-                {/* === ИКОНКА FACEIT В УГЛУ === */}
+                {/* === ИКОНКА FACEIT В УГЛУ (верхний правый) === */}
                 {canShowFaceitLink && (
                     <a
                         href={faceitProfileUrl}
@@ -75,14 +80,50 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
                         title="Профиль на Faceit"
                     >
                         <img
-                            src="/images/faceit.jpg"
+                            src="/images/фейсит.jpg"
                             alt="Faceit"
                             className="faceit-icon"
                         />
                     </a>
                 )}
             </div>
-            {/* Добавь по желанию другие social/linked info блоки тут */}
+
+            {/* === ИКОНКИ СОЦСЕТЕЙ В ПРАВОМ НИЖНЕМ УГЛУ === */}
+            <div className="social-accounts">
+                {canShowFaceitLink && (
+                    <a
+                        href={faceitProfileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-icon"
+                        title="Профиль на Faceit"
+                    >
+                        <img src="/images/фейсит.jpg" alt="Faceit" />
+                    </a>
+                )}
+                {user.isSteamLinked && steamProfileUrl && (
+                    <a
+                        href={steamProfileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-icon"
+                        title="Профиль в Steam"
+                    >
+                        <img src="/images/стим.png" alt="Steam" />
+                    </a>
+                )}
+                {user.isTelegramLinked && telegramProfileUrl && (
+                    <a
+                        href={telegramProfileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-icon"
+                        title="Профиль в Telegram"
+                    >
+                        <img src="/images/тг.png" alt="Telegram" />
+                    </a>
+                )}
+            </div>
         </div>
     );
 };

@@ -21,12 +21,15 @@ export interface User {
     tariff: UserTariff;
     avatarUrl?: string;
     faceitNickname?: string;
+    faceitId?: string;
     age?: number | string;
     about?: string;
     isGoogleLinked?: boolean;
     isYandexLinked?: boolean;
     isSteamLinked?: boolean;
     isTelegramLinked?: boolean;
+    steamUrl?: string;
+    telegramUrl?: string;
 }
 
 // Мок-юзер (начальное значение!)

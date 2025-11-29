@@ -1,185 +1,272 @@
 .lab-content {
     padding: 2rem;
+    /* Внутренний отступ во всём блоке lab — 2rem со всех сторон */
 }
 
 .content-section {
     display: none;
+    /* Скрываем обычные секции (deactivated/неактивные секции) */
 }
 
 .content-section.active {
     display: block;
+    /* Показываем только активную секцию (та, что видима) */
 }
 
 /* Дашборд карточки */
 .dashboard-grid {
     display: grid;
+    /* Используем CSS grid для сетки карточек */
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* Колонки автоширины, min 300px, max — делит пространство поровну */
     gap: 2rem;
+    /* Отступы между карточками — 2rem */
     margin-bottom: 2rem;
+    /* Отступ снизу от всей сетки — 2rem */
 }
 
 .dashboard-card {
     background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
+    /* Градиент (тёмный) фон карточки (слева снизу вверх вправо) */
     border-radius: 16px;
+    /* Закруглённые углы — 16px */
     padding: 2rem;
+    /* Внутренние отступы карточки — 2rem */
     border: 1px solid #333;
+    /* Контур тёмно-серый */
     transition: all 0.3s ease;
+    /* Плавный переход для любых свойств */
 }
 
 .dashboard-card:hover {
     transform: translateY(-5px);
+    /* Поднимаем карточку вверх на 5px при наведении */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    /* Тень при наведении */
     border-color: #ff6b35;
+    /* Обводка становится оранжевой при наведении */
 }
 
 .dashboard-card h3 {
     margin: 0 0 1.5rem 0;
+    /* Сверху отступа нет, снизу 1.5rem */
     font-size: 1.3rem;
+    /* Размер шрифта заголовка */
     font-weight: 600;
+    /* Жирность — SemiBold */
     color: #ffffff;
+    /* Белый цвет */
 }
 
 /* Статистика блока */
 .stats-grid {
     display: grid;
+    /* Грид для статистики */
     grid-template-columns: repeat(3, 1fr);
+    /* Три колонки одинаковой ширины */
     gap: 1rem;
+    /* Промежутки между колонками — 1rem */
 }
 
 .stat-item {
     text-align: center;
+    /* Ориентация содержимого по центру в статистике */
 }
 
 .stat-number {
     font-size: 2rem;
+    /* Крупные цифры статистики */
     font-weight: 700;
+    /* Жирные цифры */
     color: #ff6b35;
+    /* Цифры оранжевые */
     margin-bottom: 0.5rem;
+    /* Отступ снизу от числа */
 }
 
 .stat-label {
     font-size: 0.9rem;
+    /* Чуть меньше стандартного шрифта */
     color: #999;
+    /* Серый */
 }
 
 /* Прогресс */
 .progress-item {
     display: flex;
+    /* Flex для выравнивания по горизонтали */
     align-items: center;
+    /* Центрирование по вертикали */
     gap: 1rem;
+    /* Промежутки между элементами — 1rem */
     margin-bottom: 1rem;
+    /* Отступ снизу между полосами прогресса */
 }
 
 .progress-label {
     min-width: 80px;
+    /* Минимальная ширина подписи слева */
     font-weight: 500;
+    /* Полужирный текст */
 }
 
 .progress-bar {
     flex: 1;
+    /* Занимает всё оставшееся место */
     height: 8px;
+    /* Высота полосы */
     background: #333;
+    /* Тёмно-серый фон */
     border-radius: 4px;
+    /* Скруглённые края */
     overflow: hidden;
+    /* Обрезаем лишнее у fill */
 }
 
 .progress-fill {
     height: 100%;
+    /* Заполнение на всю высоту полоски */
     background: linear-gradient(90deg, #ff6b35, #ff8c42);
+    /* Градиент по горизонтали (оранжевый) */
     border-radius: 4px;
+    /* Скругления, чтобы даже при маленькой ширине торцы были круглыми */
     transition: width 0.3s ease;
+    /* Плавное изменение ширины заполнения */
 }
 
 .progress-value {
     min-width: 40px;
+    /* Минимальная ширина для числа справа */
     text-align: right;
+    /* Справа текст (процент, баллы...) */
     font-weight: 600;
+    /* Полужирный */
     color: #ff6b35;
+    /* Оранжевый */
 }
 
 /* Последние тренировки */
 .recent-list {
     display: flex;
+    /* Вертикальная колонка последних тренировок */
     flex-direction: column;
     gap: 1rem;
+    /* Промежутки между элементами списка */
 }
 
 .recent-item {
     display: flex;
+    /* Flex: иконка + текст + баллы */
     align-items: center;
+    /* Вертикальное центрирование */
     gap: 1rem;
+    /* Горизонтальный отступ между элементами */
     padding: 1rem;
+    /* Внутри немного воздуха */
     background: rgba(255, 255, 255, 0.05);
+    /* Полупрозрачный белый фон */
     border-radius: 8px;
+    /* Скругления */
     transition: all 0.3s ease;
+    /* Плавный hover-эффект */
 }
 
 .recent-item:hover {
     background: rgba(255, 107, 53, 0.1);
+    /* При наведении — легкий полупрозрачный оранжевый фон */
 }
 
 .recent-icon {
     font-size: 1.5rem;
+    /* Крупная иконка */
 }
 
 .recent-info {
     flex: 1;
+    /* Текст занимает всё доступное место */
 }
 
 .recent-title {
     font-weight: 600;
+    /* Жирный заголовок тренировки */
     margin-bottom: 0.25rem;
+    /* Минимальный отступ снизу */
 }
 
 .recent-date {
     font-size: 0.9rem;
+    /* Мелкий шрифт для даты */
     color: #999;
+    /* Серый */
 }
 
 .recent-score {
     font-weight: 600;
+    /* Жирный */
     color: #4CAF50;
+    /* Зеленый цвет для баллов/оценки */
 }
 
 /* Следующая тренировка */
 .next-training {
     display: flex;
+    /* Flex: иконка + инфо + кнопка войти */
     align-items: center;
+    /* Центр по вертикали */
     gap: 1rem;
+    /* Отступы между элементами */
 }
 
 .next-icon {
     font-size: 2rem;
+    /* Крупная иконка тренировки */
 }
 
 .next-info {
     flex: 1;
+    /* Описание занимает максимум ширины */
 }
 
 .next-title {
     font-weight: 600;
+    /* Жирный заголовок */
     margin-bottom: 0.5rem;
+    /* Немного воздуха снизу */
 }
 
 .next-time,
 .next-duration {
     font-size: 0.9rem;
+    /* Мелкий шрифт для деталей */
     color: #999;
+    /* Серый */
     margin-bottom: 0.25rem;
+    /* Отступ между строчками */
 }
 
+/* Кнопка "присоединиться" к тренировке */
 .join-btn {
     background: linear-gradient(135deg, #4CAF50, #45a049);
+    /* Градиент зеленый */
     color: #ffffff;
+    /* Белый текст */
     border: none;
+    /* Без контура */
     padding: 0.8rem 1.5rem;
+    /* Увеличенные внутренние отступы */
     border-radius: 8px;
+    /* Скругления */
     font-weight: 600;
+    /* Жирный текст */
     cursor: pointer;
+    /* pointer по наведению */
     transition: all 0.3s ease;
+    /* Эффект при наведении */
 }
 
 .join-btn:hover {
     transform: translateY(-2px);
+    /* Лёгкое приподнятие при hover */
     box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    /* Зеленоватая тень */
 }

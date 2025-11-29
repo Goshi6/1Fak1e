@@ -1,91 +1,106 @@
-/* Faceit.css */
-
-/* === FACEIT ИКОНКА В ПРОФИЛЕ === */
-.faceit-icon-link {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-
-.faceit-icon-link:hover {
-    transform: scale(1.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.faceit-icon {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    cursor: pointer;
-}
-
 /* === FACEIT В НАСТРОЙКАХ === */
+
+/* Контейнер для всей зоны с линком Faceit, оформление блока */
 .faceit-link-container {
     display: flex;
+    /* Делаем flex-контейнер для вертикального размещения элементов */
     flex-direction: column;
+    /* Элементы размещаются в столбик (по вертикали) */
     gap: 8px;
+    /* Отступы между элементами внутри контейнера — 8px */
     padding: 12px;
+    /* Внутренний отступ со всех сторон — 12px */
     background: #f5f5f5;
+    /* Светло-серый фон блока */
     border-radius: 6px;
+    /* Закругленные углы блока — 6px */
     margin-bottom: 12px;
+    /* Внешний нижний отступ блока — 12px */
 }
 
+/* Блок с ником Faceit при успешном связывании профиля */
 .faceit-linked-info {
     display: flex;
+    /* Flex-контейнер для горизонтального размещения элементов */
     align-items: center;
+    /* Вертикальное выравнивание элементов по центру */
     gap: 12px;
+    /* Горизонтальный отступ между ником и подписью — 12px */
 }
 
+/* Подпись "Faceit ник:" — отдельно стилизуется */
 .faceit-nick-label {
     font-weight: 600;
-    color: #666;
+    /* Полужирный (SemiBold) текст */
+    color: #000000;
+    /* Оранжевый цвет для текста */
 }
 
+/* Сам ник Faceit — визуально акцентируется */
 .faceit-nick-value {
     font-size: 16px;
+    /* Размер текста ника — 16px */
     font-weight: 700;
-    color: #1a73e8;
+    /* Жирный шрифт для ника */
+    color: #000000;
+    /* Оранжевый цвет (тот же, что и у .faceit-nick-label) */
 }
 
+/* Кнопка для отвязки Faceit — обязательно акцентным цветом */
 .unlink-btn {
     padding: 8px 16px;
+    /* Внутренние отступы — сверху/снизу 8px, слева/справа 16px */
     background: #ff4444;
+    /* Ярко-красный фон кнопки */
     color: white;
+    /* Белый текст */
     border: none;
+    /* Убираем стандартную обводку */
     border-radius: 4px;
+    /* Скругляем углы кнопки — 4px */
     cursor: pointer;
+    /* При наведении появляется рука (pointer) */
     font-weight: 600;
+    /* Полужирный текст */
     transition: background 0.2s;
+    /* Плавный переход изменения цвета фона при hover */
 }
 
+/* При наведении кнопка становится темнее, чтобы был приятный эффект */
 .unlink-btn:hover {
     background: #cc0000;
+    /* Более тёмно-красный фон */
 }
 
+/* Кнопка для привязки Faceit — в стиле брендового синего */
 .link-btn {
     padding: 10px 16px;
+    /* Внутр. отступы — сверху/снизу 10px, слева/справа 16px */
     background: #1a73e8;
+    /* Ярко-синий фон */
     color: white;
+    /* Белый текст */
     border: none;
+    /* Убираем стандартную обводку */
     border-radius: 4px;
+    /* Скругляем углы — 4px */
     cursor: pointer;
+    /* pointer курсор по наведении */
     font-weight: 600;
+    /* Полужирный текст */
     transition: background 0.2s;
+    /* Плавный переход фона при hover */
 }
 
+/* Hover-состояние синей кнопки — фон становится чуть темнее */
 .link-btn:hover {
     background: #1557b0;
+    /* Темно-синий фон */
 }
 
 /* === ПОЗИЦИЯ ДЛЯ ПРОФИЛЯ-КАРТОЧКИ === */
+/* Контейнер для header блока в карточке профиля */
 .profile-header {
     position: relative;
+    /* Позиционирование относительно блока, удобно для абсолютных элементов внутри (например, иконки Faceit) */
 }

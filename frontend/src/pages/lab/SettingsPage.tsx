@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
-import type { User } from "./UserProfile";
+import React, { useEffect, ChangeEvent } from "react";
 import "./Faceit.css";
 
-// Backend OAuth endpoints (замени на твой актуальный tunnel url)
+// Замени url, если меняется туннель
 const OAUTH_REDIRECTS: Record<string, string> = {
     Faceit: "https://early-bats-wave.loca.lt/auth/faceit/redirect",
     Google: "https://early-bats-wave.loca.lt/auth/google/redirect",
@@ -11,10 +10,28 @@ const OAUTH_REDIRECTS: Record<string, string> = {
     Telegram: "https://early-bats-wave.loca.lt/auth/telegram/redirect",
 };
 
+type User = {
+    name?: string;
+    age?: number;
+    about?: string;
+    avatarUrl?: string | null;
+
+    // Faceit
+    isFaceitLinked?: boolean;
+    faceitNickname?: string;
+    faceitId?: string;
+
+    // Остальные сервисы
+    isGoogleLinked?: boolean;
+    isYandexLinked?: boolean;
+    isSteamLinked?: boolean;
+    isTelegramLinked?: boolean;
+};
+
 type SettingsPageProps = {
     user: User;
-    onChange: (changes: Partial<User>) => void;
-    onAccountLink: (service: string) => void;
+    onChange: (upd: Partial<User>) => void;
+    onAccountLink?: (service: string) => void;
 };
 
 const SettingsPage: React.FC<SettingsPageProps> = ({
@@ -23,7 +40,11 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
     onAccountLink,
 }) => {
     const handleFaceitUnlink = () => {
-        onChange({ isFaceitLinked: false, faceitNickname: "", faceitId: "" });
+        onChange({
+            isFaceitLinked: false,
+            faceitNickname: "",
+            faceitId: "",
+        });
     };
 
     const handleAccountLink = (service: string) => {
@@ -33,12 +54,11 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
         } else {
             alert("Нет редиректа для сервиса: " + service);
         }
-        // (или: onAccountLink(service); если логика вынесена в родителя)
+        // Или: onAccountLink?.(service);
     };
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-
         const nickname = params.get("nickname");
         const faceit_id = params.get("faceit_id");
         if (nickname && faceit_id) {
@@ -50,11 +70,23 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
             });
             window.history.replaceState({}, "", window.location.pathname);
         }
-        // Аналогично можешь обработать другие сервисы на будущее.
+        // Аналогично можешь обработать callback других сервисов
     }, [onChange, user.avatarUrl]);
+
+    const handleAvatarUpload = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                onChange({ avatarUrl: event.target?.result as string });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <form className="settings-form" onSubmit={(e) => e.preventDefault()}>
+            {/* Имя (ник) */}
             <label>
                 Ник:
                 <input
@@ -64,10 +96,13 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     onChange={(e) => onChange({ name: e.target.value })}
                 />
                 {user.faceitNickname && (
-                    <span className="info">Ник берётся с Faceit (автоматически)</span>
+                    <span className="info">
+                        Ник берется с Faceit (автоматически)
+                    </span>
                 )}
             </label>
 
+            {/* Возраст */}
             <label>
                 Возраст:
                 <input
@@ -77,6 +112,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 />
             </label>
 
+            {/* О себе */}
             <label>
                 О себе:
                 <textarea
@@ -86,21 +122,13 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 />
             </label>
 
+            {/* Аватар */}
             <label>
                 Аватар:
                 <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => {
-                        if (e.target.files && e.target.files[0]) {
-                            const file = e.target.files[0];
-                            const reader = new FileReader();
-                            reader.onload = (event) => {
-                                onChange({ avatarUrl: event.target?.result as string });
-                            };
-                            reader.readAsDataURL(file);
-                        }
-                    }}
+                    onChange={handleAvatarUpload}
                 />
                 {user.avatarUrl && (
                     <img
@@ -111,7 +139,9 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 )}
             </label>
 
+            {/* Связанные аккаунты */}
             <div className="link-block">
+                {/* FACEIT */}
                 <div className="faceit-link-container">
                     {user.isFaceitLinked ? (
                         <>
@@ -138,16 +168,28 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     )}
                 </div>
 
-                <button type="button" onClick={() => handleAccountLink("Google")}>
+                <button
+                    type="button"
+                    onClick={() => handleAccountLink("Google")}
+                >
                     {user.isGoogleLinked ? "Google привязан" : "Привязать Google"}
                 </button>
-                <button type="button" onClick={() => handleAccountLink("Yandex")}>
+                <button
+                    type="button"
+                    onClick={() => handleAccountLink("Yandex")}
+                >
                     {user.isYandexLinked ? "Яндекс привязан" : "Привязать Яндекс"}
                 </button>
-                <button type="button" onClick={() => handleAccountLink("Steam")}>
+                <button
+                    type="button"
+                    onClick={() => handleAccountLink("Steam")}
+                >
                     {user.isSteamLinked ? "Steam привязан" : "Привязать Steam"}
                 </button>
-                <button type="button" onClick={() => handleAccountLink("Telegram")}>
+                <button
+                    type="button"
+                    onClick={() => handleAccountLink("Telegram")}
+                >
                     {user.isTelegramLinked ? "Telegram привязан" : "Привязать Telegram"}
                 </button>
             </div>
