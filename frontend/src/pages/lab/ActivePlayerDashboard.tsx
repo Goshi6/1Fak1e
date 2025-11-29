@@ -8,6 +8,7 @@ import SettingsPage from "./SettingsPage";
 
 interface ActivePlayerDashboardProps {
     user: User;
+    setUser: React.Dispatch<React.SetStateAction<User>>;
 }
 
 const TABS = [
@@ -16,19 +17,23 @@ const TABS = [
     "Пракки",
     "Домашние задания",
     "Поддержка",
-    "Настройки"
+    "Настройки",
 ];
 
-const ActivePlayerDashboard: React.FC<ActivePlayerDashboardProps> = ({ user: initialUser }) => {
+const ActivePlayerDashboard: React.FC<ActivePlayerDashboardProps> = ({
+    user,
+    setUser,
+}) => {
     const [currentTab, setCurrentTab] = useState("Профиль");
-    const [user, setUser] = useState<User>(initialUser);
 
     const handleProfileChange = (changes: Partial<User>) => {
-        setUser(prev => ({ ...prev, ...changes }));
+        setUser((prev) => ({ ...prev, ...changes }));
     };
 
     const handleAccountLink = (service: string) => {
-        setUser(prev => ({ ...prev, [`is${service}Linked`]: true }));
+        setUser(
+            (prev) => ({ ...prev, [`is${service}Linked`]: true } as User),
+        );
     };
 
     const renderTabContent = () => {
@@ -44,7 +49,11 @@ const ActivePlayerDashboard: React.FC<ActivePlayerDashboardProps> = ({ user: ini
                     />
                 );
             default:
-                return <div style={{ padding: 24 }}>Секция «{currentTab}» — тут будет твой контент!</div>;
+                return (
+                    <div style={{ padding: 24 }}>
+                        Секция «{currentTab}» — тут будет твой контент!
+                    </div>
+                );
         }
     };
 
@@ -56,10 +65,12 @@ const ActivePlayerDashboard: React.FC<ActivePlayerDashboardProps> = ({ user: ini
                     tabs={TABS}
                     currentTab={currentTab}
                     setCurrentTab={setCurrentTab}
+                    user={{
+                        avatarUrl: user.avatarUrl,
+                        name: user.name,
+                    }}
                 />
-                <main className="lab-main">
-                    {renderTabContent()}
-                </main>
+                <main className="lab-main">{renderTabContent()}</main>
             </div>
         </>
     );

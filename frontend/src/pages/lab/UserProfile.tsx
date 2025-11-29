@@ -2,15 +2,15 @@ import React from "react";
 import "./Profile.css";
 import "./Faceit.css";
 
-// Обновленный тип User
+// Унифицированный тип User
 export interface User {
     id: string;
     name: string;
     faceitNickname?: string;
-    faceitId?: string; // ← Новое поле для ID Faceit
+    faceitId?: string;
     isFaceitLinked?: boolean;
-    avatarUrl?: string;
-    age?: number | string;
+    avatarUrl?: string;              // только string | undefined
+    age?: number;                    // только number | undefined
     about?: string;
     isGoogleLinked?: boolean;
     isYandexLinked?: boolean;
@@ -34,10 +34,14 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
 
     // URL для Steam и Telegram (можно формировать или брать из user)
     const steamProfileUrl = user.steamUrl || (user.isSteamLinked ? "#" : null);
-    const telegramProfileUrl = user.telegramUrl || (user.isTelegramLinked ? "#" : null);
+    const telegramProfileUrl =
+        user.telegramUrl || (user.isTelegramLinked ? "#" : null);
 
     return (
-        <div className="profile-card clean-profile" style={{ position: 'relative' }}>
+        <div
+            className="profile-card clean-profile"
+            style={{ position: "relative" }}
+        >
             <div className="profile-header">
                 <img
                     className="profile-avatar"

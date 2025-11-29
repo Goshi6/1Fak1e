@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import LabNavbar from "../../components/LabNavbar/LabNavbar";
 import Sidebar from "../../components/Sidebar";
-import UserProfile from "./UserProfile";
+import UserProfile, { User as ProfileUser } from "./UserProfile";
 import SettingsPage from "./SettingsPage";
 import "./lab-page.css";
 import "./lab-main.css";
@@ -14,22 +14,10 @@ import "./Profile.css";
 type UserRole = "new" | "active" | "ex-player" | "coach";
 type UserTariff = "lite" | "plus" | "pro" | null;
 
-export interface User {
-    id: string;
-    name: string;
+// Берём базовый User из UserProfile и расширяем под лабу
+export interface User extends ProfileUser {
     role: UserRole;
     tariff: UserTariff;
-    avatarUrl?: string;
-    faceitNickname?: string;
-    faceitId?: string;
-    age?: number | string;
-    about?: string;
-    isGoogleLinked?: boolean;
-    isYandexLinked?: boolean;
-    isSteamLinked?: boolean;
-    isTelegramLinked?: boolean;
-    steamUrl?: string;
-    telegramUrl?: string;
 }
 
 // Мок-юзер (начальное значение!)
@@ -100,6 +88,7 @@ interface ActivePlayerDashboardProps {
     user: User;
     setUser: React.Dispatch<React.SetStateAction<User>>;
 }
+
 const TABS = [
     "Профиль",
     "Теория",
@@ -108,6 +97,7 @@ const TABS = [
     "Поддержка",
     "Настройки",
 ];
+
 const ActivePlayerDashboard: React.FC<ActivePlayerDashboardProps> = ({
     user,
     setUser,
@@ -119,10 +109,9 @@ const ActivePlayerDashboard: React.FC<ActivePlayerDashboardProps> = ({
     };
 
     const handleAccountLink = (service: string) => {
-        setUser((prev) => ({ ...prev, [`is${service}Linked`]: true }));
+        setUser((prev) => ({ ...prev, [`is${service}Linked`]: true } as User));
     };
 
-    // ВАЖНО: никаких тестовых input, только профиль!
     const renderTabContent = () => {
         switch (currentTab) {
             case "Профиль":
@@ -157,9 +146,7 @@ const ActivePlayerDashboard: React.FC<ActivePlayerDashboardProps> = ({
                         name: user.name,
                     }}
                 />
-                <main className="lab-main">
-                    {renderTabContent()}
-                </main>
+                <main className="lab-main">{renderTabContent()}</main>
             </div>
         </>
     );
