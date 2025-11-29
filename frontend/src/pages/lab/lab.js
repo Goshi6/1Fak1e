@@ -10,7 +10,6 @@ import "./lab-content.css";
 import "./lab-sidebar.css";
 import "./lab-header.css";
 import "./Profile.css";
-// Мок-юзер (начальное значение!)
 const initialUser = {
     id: "1222",
     name: "Гошан",
@@ -19,7 +18,6 @@ const initialUser = {
     avatarUrl: "",
     faceitNickname: "Гошан",
 };
-// --- ВСЕ user и setUser только в Lab ---
 const Lab = () => {
     const [user, setUser] = useState(initialUser);
     if (user.role === "coach")
@@ -30,7 +28,6 @@ const Lab = () => {
         return _jsx(ExPlayerDashboard, { user: user });
     return _jsx(NewUserDashboard, { user: user });
 };
-// Остальные дашборды (без изменений)
 function CoachDashboard({ user }) {
     return (_jsxs(_Fragment, { children: [_jsx(LabNavbar, {}), _jsxs("div", { className: "lab-page", children: [_jsx("h1", { children: "\u041A\u0430\u0431\u0438\u043D\u0435\u0442 \u0442\u0440\u0435\u043D\u0435\u0440\u0430" }), _jsxs("p", { children: ["\u0414\u043E\u0431\u0440\u043E \u043F\u043E\u0436\u0430\u043B\u043E\u0432\u0430\u0442\u044C, ", user.name, "!"] })] })] }));
 }
@@ -50,13 +47,12 @@ const TABS = [
 ];
 const ActivePlayerDashboard = ({ user, setUser, }) => {
     const [currentTab, setCurrentTab] = useState("Профиль");
-    const handleProfileChange = (changes) => {
-        setUser((prev) => ({ ...prev, ...changes }));
+    const handleProfileChange = (upd) => {
+        setUser((prev) => ({ ...prev, ...upd }));
     };
     const handleAccountLink = (service) => {
         setUser((prev) => ({ ...prev, [`is${service}Linked`]: true }));
     };
-    // ВАЖНО: никаких тестовых input, только профиль!
     const renderTabContent = () => {
         switch (currentTab) {
             case "Профиль":

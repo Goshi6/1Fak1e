@@ -1,5 +1,6 @@
 import React, { useEffect, ChangeEvent } from "react";
 import "./Faceit.css";
+import type { User } from "./UserProfile";
 
 // Замени url, если меняется туннель
 const OAUTH_REDIRECTS: Record<string, string> = {
@@ -8,24 +9,6 @@ const OAUTH_REDIRECTS: Record<string, string> = {
     Yandex: "https://early-bats-wave.loca.lt/auth/yandex/redirect",
     Steam: "https://early-bats-wave.loca.lt/auth/steam/redirect",
     Telegram: "https://early-bats-wave.loca.lt/auth/telegram/redirect",
-};
-
-type User = {
-    name?: string;
-    age?: number;
-    about?: string;
-    avatarUrl?: string | null;
-
-    // Faceit
-    isFaceitLinked?: boolean;
-    faceitNickname?: string;
-    faceitId?: string;
-
-    // Остальные сервисы
-    isGoogleLinked?: boolean;
-    isYandexLinked?: boolean;
-    isSteamLinked?: boolean;
-    isTelegramLinked?: boolean;
 };
 
 type SettingsPageProps = {
@@ -54,7 +37,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
         } else {
             alert("Нет редиректа для сервиса: " + service);
         }
-        // Или: onAccountLink?.(service);
+        // onAccountLink?.(service);
     };
 
     useEffect(() => {
@@ -66,11 +49,10 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 isFaceitLinked: true,
                 faceitNickname: nickname,
                 faceitId: faceit_id,
-                avatarUrl: params.get("avatar") || user.avatarUrl,
+                avatarUrl: (params.get("avatar") as string) || user.avatarUrl,
             });
             window.history.replaceState({}, "", window.location.pathname);
         }
-        // Аналогично можешь обработать callback других сервисов
     }, [onChange, user.avatarUrl]);
 
     const handleAvatarUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -86,7 +68,6 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
 
     return (
         <form className="settings-form" onSubmit={(e) => e.preventDefault()}>
-            {/* Имя (ник) */}
             <label>
                 Ник:
                 <input
@@ -96,23 +77,23 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     onChange={(e) => onChange({ name: e.target.value })}
                 />
                 {user.faceitNickname && (
-                    <span className="info">
-                        Ник берется с Faceit (автоматически)
-                    </span>
+                    <span className="info">Ник берется с Faceit (автоматически)</span>
                 )}
             </label>
 
-            {/* Возраст */}
             <label>
                 Возраст:
                 <input
                     type="number"
-                    value={user.age || ""}
-                    onChange={(e) => onChange({ age: Number(e.target.value) })}
+                    value={user.age ?? ""}
+                    onChange={(e) =>
+                        onChange({
+                            age: e.target.value === "" ? undefined : Number(e.target.value),
+                        })
+                    }
                 />
             </label>
 
-            {/* О себе */}
             <label>
                 О себе:
                 <textarea
@@ -122,7 +103,6 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 />
             </label>
 
-            {/* Аватар */}
             <label>
                 Аватар:
                 <input
@@ -139,15 +119,15 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 )}
             </label>
 
-            {/* Связанные аккаунты */}
             <div className="link-block">
-                {/* FACEIT */}
                 <div className="faceit-link-container">
                     {user.isFaceitLinked ? (
                         <>
                             <div className="faceit-linked-info">
                                 <span className="faceit-nick-label">Faceit ник:</span>
-                                <span className="faceit-nick-value">{user.faceitNickname}</span>
+                                <span className="faceit-nick-value">
+                                    {user.faceitNickname}
+                                </span>
                             </div>
                             <button
                                 type="button"

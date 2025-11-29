@@ -2,15 +2,15 @@ import React from "react";
 import "./Profile.css";
 import "./Faceit.css";
 
-// Унифицированный тип User
+// Базовый тип User для профиля
 export interface User {
     id: string;
     name: string;
     faceitNickname?: string;
     faceitId?: string;
     isFaceitLinked?: boolean;
-    avatarUrl?: string;              // только string | undefined
-    age?: number;                    // только number | undefined
+    avatarUrl?: string; // только string | undefined
+    age?: number; // только number | undefined
     about?: string;
     isGoogleLinked?: boolean;
     isYandexLinked?: boolean;
@@ -27,12 +27,10 @@ interface UserProfileProps {
 const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
     const canShowFaceitLink = !!user.isFaceitLinked && !!user.faceitNickname;
 
-    // URL на Faceit-профиль по никнейму
     const faceitProfileUrl = user.faceitNickname
         ? `https://www.faceit.com/ru/players/${user.faceitNickname}`
         : "";
 
-    // URL для Steam и Telegram (можно формировать или брать из user)
     const steamProfileUrl = user.steamUrl || (user.isSteamLinked ? "#" : null);
     const telegramProfileUrl =
         user.telegramUrl || (user.isTelegramLinked ? "#" : null);
@@ -74,7 +72,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
                     </div>
                 </div>
 
-                {/* === ИКОНКА FACEIT В УГЛУ (верхний правый) === */}
                 {canShowFaceitLink && (
                     <a
                         href={faceitProfileUrl}
@@ -92,7 +89,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
                 )}
             </div>
 
-            {/* === ИКОНКИ СОЦСЕТЕЙ В ПРАВОМ НИЖНЕМ УГЛУ === */}
             <div className="social-accounts">
                 {canShowFaceitLink && (
                     <a

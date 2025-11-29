@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import LabNavbar from "../../components/LabNavbar/LabNavbar";
 import Sidebar from "../../components/Sidebar";
 import "./lab-sidebar.css";
-import type { User } from "./UserProfile";
-import UserProfile from "./UserProfile";
+import UserProfile, { User } from "./UserProfile";
 import SettingsPage from "./SettingsPage";
 
 interface ActivePlayerDashboardProps {
@@ -26,8 +25,8 @@ const ActivePlayerDashboard: React.FC<ActivePlayerDashboardProps> = ({
 }) => {
     const [currentTab, setCurrentTab] = useState("Профиль");
 
-    const handleProfileChange = (changes: Partial<User>) => {
-        setUser((prev) => ({ ...prev, ...changes }));
+    const handleProfileChange: (upd: Partial<User>) => void = (upd) => {
+        setUser((prev) => ({ ...prev, ...upd }));
     };
 
     const handleAccountLink = (service: string) => {

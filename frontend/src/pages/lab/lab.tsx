@@ -10,17 +10,14 @@ import "./lab-sidebar.css";
 import "./lab-header.css";
 import "./Profile.css";
 
-// Типы для пользователя
 type UserRole = "new" | "active" | "ex-player" | "coach";
 type UserTariff = "lite" | "plus" | "pro" | null;
 
-// Берём базовый User из UserProfile и расширяем под лабу
 export interface User extends ProfileUser {
     role: UserRole;
     tariff: UserTariff;
 }
 
-// Мок-юзер (начальное значение!)
 const initialUser: User = {
     id: "1222",
     name: "Гошан",
@@ -30,7 +27,6 @@ const initialUser: User = {
     faceitNickname: "Гошан",
 };
 
-// --- ВСЕ user и setUser только в Lab ---
 const Lab: React.FC = () => {
     const [user, setUser] = useState<User>(initialUser);
 
@@ -41,7 +37,6 @@ const Lab: React.FC = () => {
     return <NewUserDashboard user={user} />;
 };
 
-// Остальные дашборды (без изменений)
 function CoachDashboard({ user }: { user: User }) {
     return (
         <>
@@ -49,7 +44,6 @@ function CoachDashboard({ user }: { user: User }) {
             <div className="lab-page">
                 <h1>Кабинет тренера</h1>
                 <p>Добро пожаловать, {user.name}!</p>
-                {/* Функционал тренера */}
             </div>
         </>
     );
@@ -83,7 +77,6 @@ function NewUserDashboard({ user }: { user: User }) {
     );
 }
 
-// === DASHBOARD ДЛЯ ACTIVE PLAYER (никаких тест-инпутов) ===
 interface ActivePlayerDashboardProps {
     user: User;
     setUser: React.Dispatch<React.SetStateAction<User>>;
@@ -104,12 +97,14 @@ const ActivePlayerDashboard: React.FC<ActivePlayerDashboardProps> = ({
 }) => {
     const [currentTab, setCurrentTab] = useState("Профиль");
 
-    const handleProfileChange = (changes: Partial<User>) => {
-        setUser((prev) => ({ ...prev, ...changes }));
+    const handleProfileChange: (upd: Partial<User>) => void = (upd) => {
+        setUser((prev) => ({ ...prev, ...upd }));
     };
 
     const handleAccountLink = (service: string) => {
-        setUser((prev) => ({ ...prev, [`is${service}Linked`]: true } as User));
+        setUser(
+            (prev) => ({ ...prev, [`is${service}Linked`]: true } as User),
+        );
     };
 
     const renderTabContent = () => {
