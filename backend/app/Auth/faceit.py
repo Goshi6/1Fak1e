@@ -7,13 +7,14 @@ from .config import FACEIT_CLIENT_ID, FACEIT_CLIENT_SECRET, FACEIT_REDIRECT_URI
 FACEIT_TOKEN_URL = "https://accounts.faceit.com/api/oauth/token"
 
 
-async def exchange_code_for_token(code: str) -> dict:
+async def exchange_code_for_token(code: str, code_verifier: str) -> dict:
     data = {
         "grant_type": "authorization_code",
         "code": code,
         "redirect_uri": FACEIT_REDIRECT_URI,
         "client_id": FACEIT_CLIENT_ID,
         "client_secret": FACEIT_CLIENT_SECRET,
+        "code_verifier": code_verifier,
     }
     # ВАЖНО: используем data, а не json — токен выдается только если флоу полностью валидный
     async with httpx.AsyncClient() as client:
