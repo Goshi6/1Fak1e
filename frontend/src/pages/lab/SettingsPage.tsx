@@ -4,7 +4,7 @@ import type { User } from "./UserProfile";
 
 // ОФИЦИАЛЬНЫЕ ОТКРЫТЫЕ URL БЭКЕНДА НА BEGET
 const OAUTH_REDIRECTS: Record<string, string> = {
-    Faceit: "http://155.212.220.11:8001/auth/faceit/redirect",
+    Faceit: "https://api.fak1e-lab.ru/auth/faceit/redirect",
     Google: "",
     Yandex: "",
     Steam: "",
