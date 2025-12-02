@@ -2,7 +2,7 @@ import React, { useEffect, ChangeEvent } from "react";
 import "./Faceit.css";
 import type { User } from "./UserProfile";
 
-// ОФИЦИАЛЬНЫЕ ОТКРЫТЫЕ URL БЭКЕНДА НА BEGET
+// ОФИЦИАЛЬНЫЕ ОТКРЫТЫЕ URL БЭКЕНДА
 const OAUTH_REDIRECTS: Record<string, string> = {
     Faceit: "https://api.fak1e-lab.ru/auth/faceit/redirect",
     Google: "",
@@ -88,7 +88,8 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     value={user.age ?? ""}
                     onChange={(e) =>
                         onChange({
-                            age: e.target.value === "" ? undefined : Number(e.target.value),
+                            age:
+                                e.target.value === "" ? undefined : Number(e.target.value),
                         })
                     }
                 />
