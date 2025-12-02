@@ -47,6 +47,8 @@ export async function startFaceitPkceFlow(clientId: string): Promise<void> {
         scope: "openid profile",
         code_challenge: challenge,
         code_challenge_method: "S256",
+        // главное добавление по ответу от Faceit:
+        redirect_popup: "true",
     });
 
     window.location.href = `https://accounts.faceit.com/oauth2/authorize?${params.toString()}`;
