@@ -142,7 +142,7 @@ function NewUserDashboard({ user }: { user: User }) {
 
 interface ActivePlayerDashboardProps {
     user: User;
-    setUser: React.Dispatch<React.SetStateAction<User>>;
+    setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 const TABS = [
@@ -161,13 +161,17 @@ const ActivePlayerDashboard: React.FC<ActivePlayerDashboardProps> = ({
     const [currentTab, setCurrentTab] = useState("Профиль");
 
     const handleProfileChange: (upd: Partial<User>) => void = (upd) => {
-        setUser((prev) => ({ ...prev, ...upd }));
+        setUser((prev) => (prev ? { ...prev, ...upd } : prev));
     };
 
     const handleAccountLink = (service: string) => {
-        setUser(
-            (prev) =>
-                ({ ...prev, [`is${service}Linked`]: true } as unknown as User),
+        setUser((prev) =>
+            prev
+                ? ({
+                    ...prev,
+                    [`is${service}Linked`]: true,
+                } as unknown as User)
+                : prev,
         );
     };
 
