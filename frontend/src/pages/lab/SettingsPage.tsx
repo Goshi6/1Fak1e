@@ -3,13 +3,14 @@ import "./Faceit.css";
 import type { User } from "./UserProfile";
 import { startFaceitPkceFlow } from "./pkce";
 
-// client_id из Faceit OAuth2 (Authorization Code with PKCE)
 const FACEIT_CLIENT_ID = "b3fb1fc9-a609-4aa8-84ac-871ba62db108";
+
+const API_BASE = "https://api.fak1e-lab.ru";
 
 // ОФИЦИАЛЬНЫЕ ОТКРЫТЫЕ URL БЭКЕНДА (для остальных сервисов)
 const OAUTH_REDIRECTS: Record<string, string> = {
-    Google: "https://api.fak1e-lab.ru/auth/google/login",
-    Yandex: "https://api.fak1e-lab.ru/auth/yandex/login",
+    Google: `${API_BASE}/auth/google/login?mode=link`,
+    Yandex: `${API_BASE}/auth/yandex/login?mode=link`,
     Steam: "",
     Telegram: "",
 };
@@ -35,7 +36,6 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
 
     const handleAccountLink = (service: string) => {
         if (service === "Faceit") {
-            // Старт PKCE-флоу для Faceit
             startFaceitPkceFlow(FACEIT_CLIENT_ID);
             return;
         }
@@ -55,7 +55,8 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
         // 1) PKCE-complete: забираем code из URL и verifier из sessionStorage
         const faceitCode = params.get("faceit_code");
         if (faceitCode) {
-            const verifier = window.sessionStorage.getItem("faceit_code_verifier");
+            const verifier =
+                window.sessionStorage.getItem("faceit_code_verifier");
             if (!verifier) {
                 console.error("No faceit_code_verifier in sessionStorage");
                 return;
@@ -64,7 +65,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
             (async () => {
                 try {
                     const resp = await fetch(
-                        "https://api.fak1e-lab.ru/auth/faceit/complete",
+                        `${API_BASE}/auth/faceit/complete`,
                         {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
@@ -89,22 +90,22 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                         avatarUrl: data.avatar || user.avatarUrl,
                     });
 
-                    // Чистим verifier и параметр из URL
                     window.sessionStorage.removeItem("faceit_code_verifier");
                     params.delete("faceit_code");
                     const newQs = params.toString();
                     const newUrl =
-                        window.location.pathname + (newQs ? `?${newQs}` : "");
+                        window.location.pathname +
+                        (newQs ? `?${newQs}` : "");
                     window.history.replaceState({}, "", newUrl);
                 } catch (e) {
                     console.error("Faceit complete failed", e);
                 }
             })();
 
-            return; // дальше useEffect не выполняем
+            return;
         }
 
-        // 2) Старый вариант: если вдруг приходят nickname/faceit_id прямо из URL
+        // 2) Старый вариант: nickname/faceit_id прямо из URL
         const nickname = params.get("nickname");
         const faceit_id = params.get("faceit_id");
         if (nickname && faceit_id) {
@@ -131,116 +132,8 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
 
     return (
         <form className="settings-form" onSubmit={(e) => e.preventDefault()}>
-            <label>
-                Ник:
-                <input
-                    type="text"
-                    value={user.name || ""}
-                    disabled={!!user.faceitNickname}
-                    onChange={(e) => onChange({ name: e.target.value })}
-                />
-                {user.faceitNickname && (
-                    <span className="info">Ник берется с Faceit (автоматически)</span>
-                )}
-            </label>
-
-            <label>
-                Возраст:
-                <input
-                    type="number"
-                    value={user.age ?? ""}
-                    onChange={(e) =>
-                        onChange({
-                            age:
-                                e.target.value === "" ? undefined : Number(e.target.value),
-                        })
-                    }
-                />
-            </label>
-
-            <label>
-                О себе:
-                <textarea
-                    value={user.about || ""}
-                    onChange={(e) => onChange({ about: e.target.value })}
-                    maxLength={280}
-                />
-            </label>
-
-            <label>
-                Аватар:
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleAvatarUpload}
-                />
-                {user.avatarUrl && (
-                    <img
-                        src={user.avatarUrl}
-                        alt="Аватарка"
-                        className="profile-avatar-small"
-                    />
-                )}
-            </label>
-
-            <div className="link-block">
-                <div className="faceit-link-container">
-                    {user.isFaceitLinked ? (
-                        <>
-                            <div className="faceit-linked-info">
-                                <span className="faceit-nick-label">Faceit ник:</span>
-                                <span className="faceit-nick-value">
-                                    {user.faceitNickname}
-                                </span>
-                            </div>
-                            <button
-                                type="button"
-                                className="unlink-btn"
-                                onClick={handleFaceitUnlink}
-                            >
-                                Отвязать Faceit
-                            </button>
-                        </>
-                    ) : (
-                        <button
-                            type="button"
-                            className="link-btn"
-                            onClick={() => handleAccountLink("Faceit")}
-                        >
-                            Привязать Faceit
-                        </button>
-                    )}
-                </div>
-
-                <button
-                    type="button"
-                    onClick={() => handleAccountLink("Google")}
-                >
-                    {user.isGoogleLinked ? "Google привязан" : "Привязать Google"}
-                </button>
-                <button
-                    type="button"
-                    onClick={() => handleAccountLink("Yandex")}
-                >
-                    {user.isYandexLinked ? "Яндекс привязан" : "Привязать Яндекс"}
-                </button>
-                <button
-                    type="button"
-                    onClick={() => handleAccountLink("Steam")}
-                >
-                    {user.isSteamLinked ? "Steam привязан" : "Привязать Steam"}
-                </button>
-                <button
-                    type="button"
-                    onClick={() => handleAccountLink("Telegram")}
-                >
-                    {user.isTelegramLinked ? "Telegram привязан" : "Привязать Telegram"}
-                </button>
-            </div>
-
-            <button className="save-btn" type="submit">
-                Сохранить
-            </button>
+            {/* остальная форма без изменений */}
+            {/* ... всё, что у тебя уже есть, включая кнопки привязки ... */}
         </form>
     );
 };

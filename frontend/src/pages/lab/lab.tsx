@@ -10,85 +10,88 @@ import "./lab-sidebar.css";
 import "./lab-header.css";
 import "./Profile.css";
 
+const API_BASE = "https://api.fak1e-lab.ru";
+
 type UserRole = "new" | "active" | "ex-player" | "coach";
 type UserTariff = "lite" | "plus" | "pro" | null;
 
 export interface User extends ProfileUser {
     role: UserRole;
     tariff: UserTariff;
-    // при желании: можно явно описать поля для связок
     googleEmail?: string | null;
     yandexEmail?: string | null;
     yandexId?: string | null;
 }
 
-const initialUser: User = {
-    id: "1222",
-    name: "Гошан",
-    role: "active",
-    tariff: "plus",
-    avatarUrl: "",
-    faceitNickname: "Гошан",
-};
-
 const Lab: React.FC = () => {
-    const [user, setUser] = useState<User>(initialUser);
+    const [user, setUser] = useState<User | null>(null);
 
-    // Обработка результатов OAuth: только флаги привязки, профиль не трогаем
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
+        const sessionParam = params.get("session");
 
-        const googleEmail = params.get("google_email");
-        const googleName = params.get("google_name");
-        const googleAvatar = params.get("google_avatar");
+        let token =
+            sessionParam || window.localStorage.getItem("session_token");
 
-        const yandexId = params.get("yandex_id");
-        const yandexEmail = params.get("yandex_email");
-        const yandexName = params.get("yandex_name");
-
-        // Если что-то прилетело от Google
-        if (googleEmail || googleName || googleAvatar) {
-            setUser((prev) => ({
-                ...prev,
-                isGoogleLinked: true,
-                googleEmail: googleEmail,
-                // НИЧЕГО не меняем в name/faceitNickname/avatarUrl
-            }));
-        }
-
-        // Если что-то прилетело от Yandex
-        if (yandexId || yandexEmail || yandexName) {
-            setUser((prev) => ({
-                ...prev,
-                isYandexLinked: true,
-                yandexEmail: yandexEmail,
-                yandexId: yandexId,
-            }));
-        }
-
-        // Очищаем URL от OAuth-параметров, но не трогаем другие (faceit_code и т.п.)
-        if (
-            googleEmail ||
-            googleName ||
-            googleAvatar ||
-            yandexId ||
-            yandexEmail ||
-            yandexName
-        ) {
-            const copy = new URLSearchParams(params.toString());
-            copy.delete("google_email");
-            copy.delete("google_name");
-            copy.delete("google_avatar");
-            copy.delete("yandex_id");
-            copy.delete("yandex_email");
-            copy.delete("yandex_name");
-
-            const newQs = copy.toString();
+        if (sessionParam) {
+            window.localStorage.setItem("session_token", sessionParam);
+            params.delete("session");
+            const newQs = params.toString();
             const newUrl =
                 window.location.pathname + (newQs ? `?${newQs}` : "");
             window.history.replaceState({}, "", newUrl);
         }
+
+        if (!token) {
+            window.location.href = "/";
+            return;
+        }
+
+        (async () => {
+            try {
+                const resp = await fetch(`${API_BASE}/auth/me`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                if (!resp.ok) {
+                    console.error("auth/me error", await resp.text());
+                    window.localStorage.removeItem("session_token");
+                    window.location.href = "/";
+                    return;
+                }
+                const data = await resp.json();
+                const providers: string[] = data.providers || [];
+                const u: User = {
+                    id: String(data.id),
+                    name: data.name || "Пользователь",
+                    role: "active",
+                    tariff: "plus",
+                    avatarUrl: data.avatar_url || "",
+                    faceitNickname: data.name || "",
+                    isGoogleLinked: providers.includes("google"),
+                    isYandexLinked: providers.includes("yandex"),
+                };
+                setUser(u);
+            } catch (e) {
+                console.error("auth/me failed", e);
+                window.location.href = "/";
+            }
+        })();
     }, []);
+
+    if (!user) {
+        return (
+            <>
+                <LabNavbar />
+                <div className="lab-page">
+                    <main className="lab-main">
+                        <p>Загрузка...</p>
+                    </main>
+                </div>
+            </>
+        );
+    }
 
     if (user.role === "coach") return <CoachDashboard user={user} />;
     if (user.role === "active")
@@ -163,7 +166,8 @@ const ActivePlayerDashboard: React.FC<ActivePlayerDashboardProps> = ({
 
     const handleAccountLink = (service: string) => {
         setUser(
-            (prev) => ({ ...prev, [`is${service}Linked`]: true } as User),
+            (prev) =>
+                ({ ...prev, [`is${service}Linked`]: true } as unknown as User),
         );
     };
 

@@ -1,13 +1,18 @@
 # app/Auth/routes_yandex.py
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends, Request
 from fastapi.responses import RedirectResponse
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.db import get_async_session
 from .yandex import (
     build_yandex_auth_url,
     exchange_code_for_tokens,
     get_yandex_userinfo,
 )
+from .session import create_session_token
+from .users_db import get_or_create_user_from_yandex
 
 router = APIRouter(
     prefix="/auth/yandex",
@@ -16,16 +21,24 @@ router = APIRouter(
 
 
 @router.get("/login")
-async def yandex_login():
+async def yandex_login(mode: str = "login"):
     """
-    Редиректит пользователя на Яндекс OAuth для логина.
+    Редиректит пользователя на Яндекс OAuth.
+    mode=login — логин с главной страницы.
+    mode=link  — привязка аккаунта в настройках.
     """
-    auth_url = build_yandex_auth_url()
+    auth_url = build_yandex_auth_url(state=mode)
     return RedirectResponse(auth_url)
 
 
 @router.get("/callback")
-async def yandex_callback(code: str | None = None, error: str | None = None):
+async def yandex_callback(
+    request: Request,
+    code: str | None = None,
+    error: str | None = None,
+    state: str | None = None,
+    session: AsyncSession = Depends(get_async_session),
+):
     """
     Callback от Яндекса.
     """
@@ -34,6 +47,8 @@ async def yandex_callback(code: str | None = None, error: str | None = None):
 
     if not code:
         raise HTTPException(400, "Code not found in Yandex callback")
+
+    mode = state or "login"
 
     try:
         # 1) Обменять code на токен
@@ -45,30 +60,29 @@ async def yandex_callback(code: str | None = None, error: str | None = None):
         # 2) Получить профиль
         userinfo = await get_yandex_userinfo(access_token)
 
-        # Яндекс возвращает структуру:
-        # {
-        #   "id": "123456789",
-        #   "login": "username",
-        #   "first_name": "Иван",
-        #   "last_name": "Иванов",
-        #   "real_name": "Иван Иванов",
-        #   "emails": ["user@yandex.ru"],
-        #   "default_email": "user@yandex.ru",
-        #   "sex": "m",
-        #   "default_phone": {...},
-        #   ...
-        # }
+        # ===== РЕЖИМ ПРИВЯЗКИ (Settings в /lab) =====
+        if mode == "link":
+            yandex_id = userinfo.get("id", "")
+            email = userinfo.get("default_email", "")
+            name = userinfo.get("real_name", "") or userinfo.get("login", "")
 
-        yandex_id = userinfo.get("id", "")
-        email = userinfo.get("default_email", "")
-        name = userinfo.get("real_name", "") or userinfo.get("login", "")
+            front_url = (
+                "https://fak1e-lab.ru/lab"
+                f"?yandex_id={yandex_id}"
+                f"&yandex_email={email}"
+                f"&yandex_name={name}"
+            )
+            return RedirectResponse(front_url)
 
-        front_url = (
-            "https://fak1e-lab.ru/lab"
-            f"?yandex_id={yandex_id}"
-            f"&yandex_email={email}"
-            f"&yandex_name={name}"
+        # ===== РЕЖИМ ЛОГИНА С ГЛАВНОЙ =====
+        user = await get_or_create_user_from_yandex(session, userinfo)
+
+        session_token = create_session_token(
+            user_id=str(user.id),
+            providers=["yandex"],
         )
+
+        front_url = f"https://fak1e-lab.ru/lab?session={session_token}"
         return RedirectResponse(front_url)
 
     except Exception as ex:
