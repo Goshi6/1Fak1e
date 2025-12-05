@@ -1,3 +1,4 @@
+// src/components/Sidebar.tsx
 import React from "react";
 
 interface SidebarProps {
@@ -15,18 +16,32 @@ const Sidebar: React.FC<SidebarProps> = ({
     tabs,
     currentTab,
     setCurrentTab,
-    user
+    user,
 }) => (
     <aside className="lab-sidebar">
+        {user && (
+            <div className="sidebar-user">
+                {user.avatarUrl && (
+                    <img
+                        src={user.avatarUrl}
+                        alt={user.name || "Профиль"}
+                        className="sidebar-avatar"
+                    />
+                )}
+                <div className="sidebar-username">
+                    {user.name || user.email || "Пользователь"}
+                </div>
+            </div>
+        )}
+
         <nav className="sidebar-menu">
             <ul className="menu-list">
-                {tabs.map(tab => (
+                {tabs.map((tab) => (
                     <li
                         key={tab}
                         className={`menu-item${tab === currentTab ? " active" : ""}`}
                         onClick={() => {
                             setCurrentTab(tab);
-                            // ДЛЯ ОТЛАДКИ!
                             // eslint-disable-next-line no-console
                             console.log("TAB CLICKED:", tab);
                         }}
