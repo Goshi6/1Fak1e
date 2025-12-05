@@ -1,11 +1,27 @@
 version: '3.8'
 services:
+  db:
+    image: postgres:16
+    container_name: fak1e_db
+    environment:
+      POSTGRES_DB: fak1e_lab
+      POSTGRES_USER: fakie
+      POSTGRES_PASSWORD: Goshka123
+      TZ: Europe/Moscow
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
   backend:
     build: ./backend
     container_name: fak1e_backend
     ports:
       - "8001:8000"
     restart: unless-stopped
+    depends_on:
+      - db
     volumes:
       - ./backend/app:/app/app
     environment:
