@@ -17,11 +17,8 @@ const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const isLoggedIn = window.localStorage.getItem("isLoggedIn") === "1";
         const token = window.localStorage.getItem("session_token");
-
-        // считаем авторизованным только если есть и флаг, и сам токен
-        if (isLoggedIn && token) {
+        if (token) {
             navigate("/lab", { replace: true });
         }
     }, [navigate]);
