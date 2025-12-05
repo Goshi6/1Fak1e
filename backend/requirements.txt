@@ -4,3 +4,4 @@ uvicorn
 
 SQLAlchemy>=2.0
 asyncpg
+PyJWT[crypto]>=2.9.0
