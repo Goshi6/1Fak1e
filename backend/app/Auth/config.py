@@ -25,3 +25,11 @@ GOOGLE_REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI")
 YANDEX_CLIENT_ID = os.getenv("YANDEX_CLIENT_ID")
 YANDEX_CLIENT_SECRET = os.getenv("YANDEX_CLIENT_SECRET")
 YANDEX_REDIRECT_URI = os.getenv("YANDEX_REDIRECT_URI")
+
+# ========= STEAM =========
+# Ключ нужно получить на https://steamcommunity.com/dev/apikey
+STEAM_API_KEY = os.getenv("STEAM_API_KEY", "")
+STEAM_RETURN_URL = os.getenv(
+    "STEAM_RETURN_URL",
+    "https://api.fak1e-lab.ru/auth/steam/callback",
+)

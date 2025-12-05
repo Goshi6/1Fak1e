@@ -11,7 +11,7 @@ const API_BASE = "https://api.fak1e-lab.ru";
 const OAUTH_REDIRECTS: Record<string, string> = {
     Google: `${API_BASE}/auth/google/login?mode=link`,
     Yandex: `${API_BASE}/auth/yandex/login?mode=link`,
-    Steam: "",
+    Steam: `${API_BASE}/auth/steam/login?mode=link`,
     Telegram: "",
 };
 
@@ -68,7 +68,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
 
-        // 1) PKCE-complete: забираем code из URL и verifier из sessionStorage
+        // 1) PKCE-complete: забираем code из URL и verifier из sessionStorage (Faceit)
         const faceitCode = params.get("faceit_code");
         if (faceitCode) {
             const verifier = window.sessionStorage.getItem("faceit_code_verifier");
@@ -116,7 +116,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
             return;
         }
 
-        // 2) Старый вариант: nickname/faceit_id прямо из URL
+        // 2) Старый вариант Faceit: nickname/faceit_id прямо из URL
         const nickname = params.get("nickname");
         const faceit_id = params.get("faceit_id");
         if (nickname && faceit_id) {
@@ -127,6 +127,23 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 avatarUrl: (params.get("avatar") as string) || user.avatarUrl,
             });
             window.history.replaceState({}, "", window.location.pathname);
+            return;
+        }
+
+        // 3) Steam: принимаем steam_id из callback и считаем аккаунт привязанным
+        const steamId = params.get("steam_id");
+        if (steamId) {
+            onChange({
+                isSteamLinked: true,
+                // добавь поле в тип User, если его там ещё нет
+                // @ts-ignore
+                steamId,
+            });
+            params.delete("steam_id");
+            const newQs = params.toString();
+            const newUrl =
+                window.location.pathname + (newQs ? `?${newQs}` : "");
+            window.history.replaceState({}, "", newUrl);
         }
     }, [onChange, user.avatarUrl]);
 
