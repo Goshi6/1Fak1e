@@ -2,7 +2,6 @@
 from sqlalchemy import (
     BigInteger,
     Column,
-    Integer,
     String,
     ForeignKey,
     DateTime,
@@ -39,8 +38,10 @@ class OAuthAccount(Base):
         ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
     )
-    provider = Column(String(32), nullable=False)          # 'google', 'yandex', ...
-    provider_user_id = Column(String(255), nullable=False) # google sub, yandex id, ...
+    # 'google', 'yandex', 'faceit', ...
+    provider = Column(String(32), nullable=False)
+    # google sub, yandex id, faceit player_id и т.п.
+    provider_user_id = Column(String(255), nullable=False)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
