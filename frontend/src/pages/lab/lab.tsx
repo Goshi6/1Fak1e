@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LabNavbar from "../../components/LabNavbar/LabNavbar";
 import Sidebar from "../../components/Sidebar";
 import UserProfile, { User as ProfileUser } from "./UserProfile";
@@ -27,8 +27,63 @@ const initialUser: User = {
     faceitNickname: "Гошан",
 };
 
+// Строим юзера на основе query-параметров Google/Yandex, если они есть
+const buildUserFromQuery = (): User => {
+    const params = new URLSearchParams(window.location.search);
+
+    const googleEmail = params.get("google_email");
+    const googleName = params.get("google_name");
+    const googleAvatar = params.get("google_avatar");
+
+    const yandexId = params.get("yandex_id");
+    const yandexEmail = params.get("yandex_email");
+    const yandexName = params.get("yandex_name");
+
+    if (googleEmail || yandexEmail) {
+        return {
+            id: googleEmail || yandexId || "unknown",
+            name: googleName || yandexName || "Новый пользователь",
+            role: "active",
+            tariff: null,
+            avatarUrl: googleAvatar || "",
+            faceitNickname: googleName || yandexName || "",
+        };
+    }
+
+    return initialUser;
+};
+
 const Lab: React.FC = () => {
-    const [user, setUser] = useState<User>(initialUser);
+    const [user, setUser] = useState<User>(() => buildUserFromQuery());
+
+    // После того как забрали данные из query, очищаем URL
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (
+            params.get("google_email") ||
+            params.get("google_name") ||
+            params.get("google_avatar") ||
+            params.get("yandex_id") ||
+            params.get("yandex_email") ||
+            params.get("yandex_name")
+        ) {
+            const newQs = (() => {
+                // если будут другие параметры (faceit_code и т.п.), не теряем их
+                const copy = new URLSearchParams(params.toString());
+                copy.delete("google_email");
+                copy.delete("google_name");
+                copy.delete("google_avatar");
+                copy.delete("yandex_id");
+                copy.delete("yandex_email");
+                copy.delete("yandex_name");
+                return copy.toString();
+            })();
+
+            const newUrl =
+                window.location.pathname + (newQs ? `?${newQs}` : "");
+            window.history.replaceState({}, "", newUrl);
+        }
+    }, []);
 
     if (user.role === "coach") return <CoachDashboard user={user} />;
     if (user.role === "active")

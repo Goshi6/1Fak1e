@@ -8,8 +8,8 @@ const FACEIT_CLIENT_ID = "b3fb1fc9-a609-4aa8-84ac-871ba62db108";
 
 // ОФИЦИАЛЬНЫЕ ОТКРЫТЫЕ URL БЭКЕНДА (для остальных сервисов)
 const OAUTH_REDIRECTS: Record<string, string> = {
-    Google: "",
-    Yandex: "",
+    Google: "https://api.fak1e-lab.ru/auth/google/login",
+    Yandex: "https://api.fak1e-lab.ru/auth/yandex/login",
     Steam: "",
     Telegram: "",
 };
