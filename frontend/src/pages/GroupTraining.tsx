@@ -4,26 +4,42 @@ import "../../public/styles.css";
 const GroupTraining = () => (
     <div className="group-trainings-page">
         {/* Навигация */}
+
         {/* Главная секция */}
         <section id="hero" className="hero">
             <div className="hero-background"></div>
-            <h1 className="hero-title">Fak1E Lab<br />Групповые тренировки CS2</h1>
-            <p className="hero-subtitle">За 4 недели улучши понимание игры и обрети навыки, которые будут влиять на исход твоих матчей</p>
+            <h1 className="hero-title">
+                Fak1E Lab
+                <br />
+                Групповые тренировки CS2
+            </h1>
+            <p className="hero-subtitle">
+                За 4 недели улучши понимание игры и обрети навыки, которые будут влиять
+                на исход твоих матчей
+            </p>
             <div className="hero-content">
                 <div className="hero-left-column">
                     <div className="hero-cards">
                         <div className="hero-card top-card">
                             <h3>Системный подход</h3>
-                            <p>Будешь заниматься по программе, состоящую из теории, практики и дополнительных заданий, заточенную под рост твоего скилла.</p>
+                            <p>
+                                Будешь заниматься по программе, состоящую из теории, практики и
+                                дополнительных заданий, заточенную под рост твоего скилла.
+                            </p>
                         </div>
                         <div className="hero-cards-bottom">
                             <div className="hero-card">
                                 <h3>Оптимальные решения</h3>
-                                <p>Научишься принимать оптимальные решения исходя из ситуации.</p>
+                                <p>
+                                    Научишься принимать оптимальные решения исходя из ситуации.
+                                </p>
                             </div>
                             <div className="hero-card">
                                 <h3>Исправление ошибок</h3>
-                                <p>Поймёшь, что конкретно тебе мешает выигрывать чаще и как это исправить.</p>
+                                <p>
+                                    Поймёшь, что конкретно тебе мешает выигрывать чаще и как это
+                                    исправить.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -33,19 +49,27 @@ const GroupTraining = () => (
                         <div className="timer-title">Стартуем 2 августа в 23:59:59</div>
                         <div className="timer-display">
                             <div className="timer-unit">
-                                <span className="timer-number" id="days">00</span>
+                                <span className="timer-number" id="days">
+                                    00
+                                </span>
                                 <span className="timer-label">дней</span>
                             </div>
                             <div className="timer-unit">
-                                <span className="timer-number" id="hours">00</span>
+                                <span className="timer-number" id="hours">
+                                    00
+                                </span>
                                 <span className="timer-label">часов</span>
                             </div>
                             <div className="timer-unit">
-                                <span className="timer-number" id="minutes">00</span>
+                                <span className="timer-number" id="minutes">
+                                    00
+                                </span>
                                 <span className="timer-label">минут</span>
                             </div>
                             <div className="timer-unit">
-                                <span className="timer-number" id="seconds">00</span>
+                                <span className="timer-number" id="seconds">
+                                    00
+                                </span>
                                 <span className="timer-label">секунд</span>
                             </div>
                         </div>
@@ -54,13 +78,18 @@ const GroupTraining = () => (
                         </div>
                     </div>
                     <div className="hero-right-bottom">
-                        <p className="hero-description">Набор в группы доступен от 1900 эло</p>
+                        <p className="hero-description">
+                            Набор в группы доступен от 1900 эло
+                        </p>
                     </div>
                 </div>
             </div>
 
             <div className="hero-center-button">
-                <button className="btn-primary btn-large">{/* onClick прокрутки к order реализовать через хук */}Записаться</button>
+                <button className="btn-primary btn-large">
+                    {/* onClick прокрутки к order реализовать через хук */}
+                    Записаться
+                </button>
             </div>
         </section>
 
@@ -70,16 +99,21 @@ const GroupTraining = () => (
                 <div className="systematic-content">
                     <div className="systematic-text-column">
                         <p className="systematic-text">
-                            Казалось бы, стараешься всё делать правильно, но твои результаты остаются нестабильными.
+                            Казалось бы, стараешься всё делать правильно, но твои результаты
+                            остаются нестабильными.
                         </p>
                         <p className="systematic-text">
-                            Дело не в том, что ты мало играешь. Можно месяцами отрабатывать не те навыки...
+                            Дело не в том, что ты мало играешь. Можно месяцами отрабатывать не
+                            те навыки...
                         </p>
                         <p className="systematic-text orange-text">
-                            Когда ты осознанно работаешь над конкретными аспектами своей игры, то прогресс перестает быть лотереей...
+                            Когда ты осознанно работаешь над конкретными аспектами своей игры,
+                            то прогресс перестает быть лотереей...
                         </p>
                         <p className="systematic-text white-text">
-                            <span className="highlight-text">Теперь такая возможность есть и у тебя!</span>
+                            <span className="highlight-text">
+                                Теперь такая возможность есть и у тебя!
+                            </span>
                         </p>
                     </div>
                     <div className="systematic-image-column">
@@ -95,7 +129,11 @@ const GroupTraining = () => (
                                     <div className="fifa-card-rating">95</div>
                                 </div>
                                 <div className="fifa-card-photo">
-                                    <img src="/images/Фото тренера (главное фото).webp" alt="Fak1E" className="fifa-trainer-photo" />
+                                    <img
+                                        src="/images/Фото тренера (главное фото).webp"
+                                        alt="Fak1E"
+                                        className="fifa-trainer-photo"
+                                    />
                                 </div>
                                 <div className="fifa-card-stats">
                                     <div className="fifa-stat">
@@ -142,7 +180,10 @@ const GroupTraining = () => (
                                 <li>Прямой контакт со мной</li>
                             </ul>
                         </div>
-                        <button className="btn-primary">{/* onClick={() => selectTariffAndScroll('group-lite')} */}Записаться</button>
+                        <button className="btn-primary">
+                            {/* onClick={() => selectTariffAndScroll('group-lite')} */}
+                            Записаться
+                        </button>
                     </div>
                     <div className="tariff-card featured">
                         <div className="tariff-header">
@@ -164,10 +205,16 @@ const GroupTraining = () => (
                                 <li>4 индивидуальных разбора твоих пракков</li>
                                 <li>Личные рекомендации от меня по улучшению игры</li>
                                 <li>Разработка индивидуального плана развития</li>
-                                <li>3 дополнительных гайда: индивидуалка, pathing, численное преимущество</li>
+                                <li>
+                                    3 дополнительных гайда: индивидуалка, pathing, численное
+                                    преимущество
+                                </li>
                             </ul>
                         </div>
-                        <button className="btn-primary">{/* onClick={() => selectTariffAndScroll('group-pro')} */}Записаться</button>
+                        <button className="btn-primary">
+                            {/* onClick={() => selectTariffAndScroll('group-pro')} */}
+                            Записаться
+                        </button>
                     </div>
                 </div>
             </div>
@@ -177,13 +224,20 @@ const GroupTraining = () => (
         <section id="included" className="included">
             <div className="container">
                 <h2>Программа</h2>
-                <p className="program-description">8 групповых тренировок за 4 недели - ты тренируешься в сформированной команде, отрабатывая ключевые навыки, нужные для твоей позиции на разбираемой карте</p>
+                <p className="program-description">
+                    8 групповых тренировок за 4 недели - ты тренируешься в сформированной
+                    команде, отрабатывая ключевые навыки, нужные для твоей позиции на
+                    разбираемой карте
+                </p>
                 <div className="program-steps">
                     <div className="program-step">
                         <div className="step-number">1</div>
                         <div className="step-content">
                             <h3>Теория</h3>
-                            <p>В начале каждой недели — теория. На ней дается вся необходимая база для игры в CS на высоком уровне...</p>
+                            <p>
+                                В начале каждой недели — теория. На ней дается вся необходимая
+                                база для игры в CS на высоком уровне...
+                            </p>
                         </div>
                     </div>
                     <div className="program-step">
@@ -197,21 +251,30 @@ const GroupTraining = () => (
                         <div className="step-number">3</div>
                         <div className="step-content">
                             <h3>Домашние задания</h3>
-                            <p>Каждую неделю ты будешь получать домашнее задание, направленное на получение новых знаний...</p>
+                            <p>
+                                Каждую неделю ты будешь получать домашнее задание, направленное
+                                на получение новых знаний...
+                            </p>
                         </div>
                     </div>
                     <div className="program-step">
                         <div className="step-number">4</div>
                         <div className="step-content">
                             <h3>Ошибки</h3>
-                            <p>Ошибки, которые мы не успели обсудить на разборе, загружаются в общий доступ...</p>
+                            <p>
+                                Ошибки, которые мы не успели обсудить на разборе, загружаются в
+                                общий доступ...
+                            </p>
                         </div>
                     </div>
                     <div className="program-step">
                         <div className="step-number">5</div>
                         <div className="step-content">
                             <h3>Индивидуальный разбор демок</h3>
-                            <p>В тарифе PRO каждую неделю тебя ждет персональный разбор со мной...</p>
+                            <p>
+                                В тарифе PRO каждую неделю тебя ждет персональный разбор со
+                                мной...
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -222,7 +285,9 @@ const GroupTraining = () => (
         <section id="order" className="order">
             <div className="container">
                 <h2>Готов начать тренировки?</h2>
-                <p className="order-subtitle">Выберите подходящий тариф и присоединяйтесь к группе</p>
+                <p className="order-subtitle">
+                    Выберите подходящий тариф и присоединяйтесь к группе
+                </p>
                 <div className="order-form">
                     <form id="orderForm" className="contact-form">
                         <div className="form-row">
@@ -232,29 +297,56 @@ const GroupTraining = () => (
                             </div>
                             <div className="form-group">
                                 <label htmlFor="contact">Контакт (Telegram)</label>
-                                <input type="text" id="contact" name="contact" placeholder="@username" required />
+                                <input
+                                    type="text"
+                                    id="contact"
+                                    name="contact"
+                                    placeholder="@username"
+                                    required
+                                />
                             </div>
                         </div>
                         <div className="form-row">
                             <div className="form-group">
                                 <label htmlFor="faceit">Ссылка на свой Faceit</label>
-                                <input type="url" id="faceit" name="faceit" placeholder="https://faceit.com/..." required />
+                                <input
+                                    type="url"
+                                    id="faceit"
+                                    name="faceit"
+                                    placeholder="https://faceit.com/..."
+                                    required
+                                />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="steam">Ссылка на свой Steam</label>
-                                <input type="url" id="steam" name="steam" placeholder="https://steamcommunity.com/..." required />
+                                <input
+                                    type="url"
+                                    id="steam"
+                                    name="steam"
+                                    placeholder="https://steamcommunity.com/..."
+                                    required
+                                />
                             </div>
                         </div>
                         <div className="form-group">
                             <label htmlFor="program">Выберите тариф</label>
                             <select id="program" name="program" required>
                                 <option value="">Выберите тариф</option>
-                                <option value="group-lite">Групповые тренировки - тариф Lite (4500₽)</option>
-                                <option value="group-pro">Групповые тренировки - тариф PRO (7000₽)</option>
+                                <option value="group-lite">
+                                    Групповые тренировки - тариф Lite (4500₽)
+                                </option>
+                                <option value="group-pro">
+                                    Групповые тренировки - тариф PRO (7000₽)
+                                </option>
                             </select>
                         </div>
-                        <button type="submit" className="btn-primary btn-large">Оставить заявку</button>
-                        <p className="order-note">Оставляя заявку, вы соглашаетесь на обработку персональных данных и с условиями бронирования счёта</p>
+                        <button type="submit" className="btn-primary btn-large">
+                            Оставить заявку
+                        </button>
+                        <p className="order-note">
+                            Оставляя заявку, вы соглашаетесь на обработку персональных данных
+                            и с условиями бронирования счёта
+                        </p>
                     </form>
                 </div>
             </div>
@@ -267,58 +359,82 @@ const GroupTraining = () => (
                     <div className="footer-top">
                         <div className="footer-logo">
                             <a href="/">
-                                <img src="/images/Эмблема Влада в левую верхнюю часть сайта около слова Fak1e.webp" alt="Fak1E Logo" className="footer-logo-img" />
+                                <img
+                                    src="/images/Эмблема Влада в левую верхнюю часть сайта около слова Fak1e.webp"
+                                    alt="Fak1E Logo"
+                                    className="footer-logo-img"
+                                />
                             </a>
                         </div>
                         <div className="footer-social">
                             <h3>Присоединяйтесь ко мне в соцсетях!</h3>
                             <div className="social-grid">
-                                <a href="https://t.me/fakieof" className="social-link" target="_blank" rel="noopener">
-                                    <img src="/images/telegram.png" alt="Telegram" className="social-icon" />
+                                <a
+                                    href="https://t.me/fakieof"
+                                    className="social-link"
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    <img
+                                        src="/images/telegram.png"
+                                        alt="Telegram"
+                                        className="social-icon"
+                                    />
                                 </a>
-                                <a href="https://www.youtube.com/@Fak1E-" className="social-link" target="_blank" rel="noopener">
-                                    <img src="/images/youtube.png" alt="YouTube" className="social-icon" />
+                                <a
+                                    href="https://www.youtube.com/@Fak1E-"
+                                    className="social-link"
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    <img
+                                        src="/images/youtube.png"
+                                        alt="YouTube"
+                                        className="social-icon"
+                                    />
                                 </a>
-                                <a href="https://www.twitch.tv/fak1eof" className="social-link" target="_blank" rel="noopener">
-                                    <img src="/images/twitch.png" alt="Twitch" className="social-icon" />
+                                <a
+                                    href="https://www.twitch.tv/fak1eof"
+                                    className="social-link"
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    <img
+                                        src="/images/twitch.png"
+                                        alt="Twitch"
+                                        className="social-icon"
+                                    />
                                 </a>
-                                <a href="https://vk.com/official_fak1e" className="social-link" target="_blank" rel="noopener">
-                                    <img src="/images/vk.png" alt="VKontakte" className="social-icon" />
+                                <a
+                                    href="https://vk.com/official_fak1e"
+                                    className="social-link"
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    <img
+                                        src="/images/vk.png"
+                                        alt="VKontakte"
+                                        className="social-icon"
+                                    />
                                 </a>
                             </div>
                         </div>
                     </div>
                     <div className="footer-bottom">
-                        <p>&copy; 2025 Тренер по Counter-Strike Владислав «Fak1E» Ребец</p>
+                        <p>
+                            &copy; 2025 Тренер по Counter-Strike Владислав «Fak1E» Ребец
+                        </p>
                         <div className="footer-links">
                             <a href="#">Оферта на оказание образовательных услуг</a>
-                            <a href="#">Политика в отношении обработки персональных данных</a>
+                            <a href="#">
+                                Политика в отношении обработки персональных данных
+                            </a>
                             <a href="#">Согласие на обработку персональных данных</a>
                         </div>
                     </div>
                 </div>
             </div>
         </footer>
-
-        {/* Модальное окно авторизации */}
-        <div id="authModal" className="auth-modal">
-            <div className="auth-modal-content">
-                <span className="auth-close">{/* onClick={closeAuthModal} */}&times;</span>
-                <h2 className="auth-title">Войти в аккаунт</h2>
-                <p className="auth-subtitle">Выберите способ входа через социальные сети</p>
-                <div className="auth-buttons">
-                    <button className="auth-btn-google">{/* onClick={signInWithGoogle} */}
-                        Войти через Google
-                    </button>
-                    <button className="auth-btn-yandex">{/* onClick={signInWithYandex} */}
-                        Войти через Яндекс
-                    </button>
-                </div>
-                <div className="auth-info">
-                    <p>Для входа используйте ваш Google или Яндекс аккаунт</p>
-                </div>
-            </div>
-        </div>
     </div>
 );
 
