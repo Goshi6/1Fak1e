@@ -132,8 +132,116 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
 
     return (
         <form className="settings-form" onSubmit={(e) => e.preventDefault()}>
-            {/* остальная форма без изменений */}
-            {/* ... всё, что у тебя уже есть, включая кнопки привязки ... */}
+            <label>
+                Ник:
+                <input
+                    type="text"
+                    value={user.name || ""}
+                    disabled={!!user.faceitNickname}
+                    onChange={(e) => onChange({ name: e.target.value })}
+                />
+                {user.faceitNickname && (
+                    <span className="info">Ник берется с Faceit (автоматически)</span>
+                )}
+            </label>
+
+            <label>
+                Возраст:
+                <input
+                    type="number"
+                    value={user.age ?? ""}
+                    onChange={(e) =>
+                        onChange({
+                            age:
+                                e.target.value === "" ? undefined : Number(e.target.value),
+                        })
+                    }
+                />
+            </label>
+
+            <label>
+                О себе:
+                <textarea
+                    value={user.about || ""}
+                    onChange={(e) => onChange({ about: e.target.value })}
+                    maxLength={280}
+                />
+            </label>
+
+            <label>
+                Аватар:
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarUpload}
+                />
+                {user.avatarUrl && (
+                    <img
+                        src={user.avatarUrl}
+                        alt="Аватарка"
+                        className="profile-avatar-small"
+                    />
+                )}
+            </label>
+
+            <div className="link-block">
+                <div className="faceit-link-container">
+                    {user.isFaceitLinked ? (
+                        <>
+                            <div className="faceit-linked-info">
+                                <span className="faceit-nick-label">Faceit ник:</span>
+                                <span className="faceit-nick-value">
+                                    {user.faceitNickname}
+                                </span>
+                            </div>
+                            <button
+                                type="button"
+                                className="unlink-btn"
+                                onClick={handleFaceitUnlink}
+                            >
+                                Отвязать Faceit
+                            </button>
+                        </>
+                    ) : (
+                        <button
+                            type="button"
+                            className="link-btn"
+                            onClick={() => handleAccountLink("Faceit")}
+                        >
+                            Привязать Faceit
+                        </button>
+                    )}
+                </div>
+
+                <button
+                    type="button"
+                    onClick={() => handleAccountLink("Google")}
+                >
+                    {user.isGoogleLinked ? "Google привязан" : "Привязать Google"}
+                </button>
+                <button
+                    type="button"
+                    onClick={() => handleAccountLink("Yandex")}
+                >
+                    {user.isYandexLinked ? "Яндекс привязан" : "Привязать Яндекс"}
+                </button>
+                <button
+                    type="button"
+                    onClick={() => handleAccountLink("Steam")}
+                >
+                    {user.isSteamLinked ? "Steam привязан" : "Привязать Steam"}
+                </button>
+                <button
+                    type="button"
+                    onClick={() => handleAccountLink("Telegram")}
+                >
+                    {user.isTelegramLinked ? "Telegram привязан" : "Привязать Telegram"}
+                </button>
+            </div>
+
+            <button className="save-btn" type="submit">
+                Сохранить
+            </button>
         </form>
     );
 };

@@ -30,16 +30,20 @@ const Lab: React.FC = () => {
         const params = new URLSearchParams(window.location.search);
         const sessionParam = params.get("session");
 
-        let token =
-            sessionParam || window.localStorage.getItem("session_token");
+        let token = sessionParam || window.localStorage.getItem("session_token");
 
         if (sessionParam) {
             window.localStorage.setItem("session_token", sessionParam);
+            // помечаем, что юзер авторизован
+            window.localStorage.setItem("isLoggedIn", "1");
+
             params.delete("session");
             const newQs = params.toString();
-            const newUrl =
-                window.location.pathname + (newQs ? `?${newQs}` : "");
+            const newUrl = window.location.pathname + (newQs ? `?${newQs}` : "");
             window.history.replaceState({}, "", newUrl);
+        } else if (token) {
+            // если токен уже есть в localStorage, считаем, что юзер залогинен
+            window.localStorage.setItem("isLoggedIn", "1");
         }
 
         if (!token) {
@@ -57,6 +61,7 @@ const Lab: React.FC = () => {
                 if (!resp.ok) {
                     console.error("auth/me error", await resp.text());
                     window.localStorage.removeItem("session_token");
+                    window.localStorage.removeItem("isLoggedIn");
                     window.location.href = "/";
                     return;
                 }
@@ -75,6 +80,8 @@ const Lab: React.FC = () => {
                 setUser(u);
             } catch (e) {
                 console.error("auth/me failed", e);
+                window.localStorage.removeItem("session_token");
+                window.localStorage.removeItem("isLoggedIn");
                 window.location.href = "/";
             }
         })();

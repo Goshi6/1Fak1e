@@ -17,23 +17,13 @@ const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const res = await fetch(`${API_BASE}/auth/me`, {
-                    credentials: "include", // чтобы кука ушла на бэк
-                });
+        const isLoggedIn = window.localStorage.getItem("isLoggedIn") === "1";
+        const token = window.localStorage.getItem("session_token");
 
-                if (res.ok) {
-                    // юзер авторизован -> сразу в /lab
-                    navigate("/lab", { replace: true });
-                }
-            } catch (e) {
-                // если ошибка сети — просто молча показываем главную
-                console.error("Auth check failed", e);
-            }
-        };
-
-        checkAuth();
+        // считаем авторизованным только если есть и флаг, и сам токен
+        if (isLoggedIn && token) {
+            navigate("/lab", { replace: true });
+        }
     }, [navigate]);
 
     return (
