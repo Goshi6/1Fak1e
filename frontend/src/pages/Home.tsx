@@ -17,11 +17,23 @@ const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // здесь проверяешь, авторизован ли пользователь
-        const token = localStorage.getItem("fak1e_token"); // имя ключа под себя
-        if (token) {
-            navigate("/lab", { replace: true });
-        }
+        const checkAuth = async () => {
+            try {
+                const res = await fetch(`${API_BASE}/auth/me`, {
+                    credentials: "include", // чтобы кука ушла на бэк
+                });
+
+                if (res.ok) {
+                    // юзер авторизован -> сразу в /lab
+                    navigate("/lab", { replace: true });
+                }
+            } catch (e) {
+                // если ошибка сети — просто молча показываем главную
+                console.error("Auth check failed", e);
+            }
+        };
+
+        checkAuth();
     }, [navigate]);
 
     return (
