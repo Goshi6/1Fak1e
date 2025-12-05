@@ -49,14 +49,29 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
         // onAccountLink?.(service);
     };
 
+    const handleLogout = async () => {
+        try {
+            // Если на бэке есть logout-эндпоинт — дергаем его
+            await fetch(`${API_BASE}/auth/logout`, {
+                method: "POST",
+                credentials: "include",
+            });
+        } catch (e) {
+            console.error("Logout request failed", e);
+        } finally {
+            // В любом случае чистим локальное состояние и уводим на главную
+            window.localStorage.removeItem("session_token");
+            window.location.href = "/";
+        }
+    };
+
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
 
         // 1) PKCE-complete: забираем code из URL и verifier из sessionStorage
         const faceitCode = params.get("faceit_code");
         if (faceitCode) {
-            const verifier =
-                window.sessionStorage.getItem("faceit_code_verifier");
+            const verifier = window.sessionStorage.getItem("faceit_code_verifier");
             if (!verifier) {
                 console.error("No faceit_code_verifier in sessionStorage");
                 return;
@@ -64,17 +79,14 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
 
             (async () => {
                 try {
-                    const resp = await fetch(
-                        `${API_BASE}/auth/faceit/complete`,
-                        {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                code: faceitCode,
-                                code_verifier: verifier,
-                            }),
-                        },
-                    );
+                    const resp = await fetch(`${API_BASE}/auth/faceit/complete`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            code: faceitCode,
+                            code_verifier: verifier,
+                        }),
+                    });
 
                     if (!resp.ok) {
                         const errText = await resp.text();
@@ -94,8 +106,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     params.delete("faceit_code");
                     const newQs = params.toString();
                     const newUrl =
-                        window.location.pathname +
-                        (newQs ? `?${newQs}` : "");
+                        window.location.pathname + (newQs ? `?${newQs}` : "");
                     window.history.replaceState({}, "", newUrl);
                 } catch (e) {
                     console.error("Faceit complete failed", e);
@@ -141,7 +152,9 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     onChange={(e) => onChange({ name: e.target.value })}
                 />
                 {user.faceitNickname && (
-                    <span className="info">Ник берется с Faceit (автоматически)</span>
+                    <span className="info">
+                        Ник берется с Faceit (автоматически)
+                    </span>
                 )}
             </label>
 
@@ -152,8 +165,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     value={user.age ?? ""}
                     onChange={(e) =>
                         onChange({
-                            age:
-                                e.target.value === "" ? undefined : Number(e.target.value),
+                            age: e.target.value === "" ? undefined : Number(e.target.value),
                         })
                     }
                 />
@@ -235,12 +247,24 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                     type="button"
                     onClick={() => handleAccountLink("Telegram")}
                 >
-                    {user.isTelegramLinked ? "Telegram привязан" : "Привязать Telegram"}
+                    {user.isTelegramLinked
+                        ? "Telegram привязан"
+                        : "Привязать Telegram"}
                 </button>
             </div>
 
             <button className="save-btn" type="submit">
                 Сохранить
+            </button>
+
+            {/* Кнопка выхода под остальными кнопками */}
+            <button
+                type="button"
+                className="logout-btn"
+                onClick={handleLogout}
+                style={{ marginTop: "16px" }}
+            >
+                Выйти из аккаунта
             </button>
         </form>
     );
