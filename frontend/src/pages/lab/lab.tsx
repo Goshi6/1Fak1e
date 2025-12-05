@@ -16,6 +16,10 @@ type UserTariff = "lite" | "plus" | "pro" | null;
 export interface User extends ProfileUser {
     role: UserRole;
     tariff: UserTariff;
+    // при желании: можно явно описать поля для связок
+    googleEmail?: string | null;
+    yandexEmail?: string | null;
+    yandexId?: string | null;
 }
 
 const initialUser: User = {
@@ -27,58 +31,59 @@ const initialUser: User = {
     faceitNickname: "Гошан",
 };
 
-// Строим юзера на основе query-параметров Google/Yandex, если они есть
-const buildUserFromQuery = (): User => {
-    const params = new URLSearchParams(window.location.search);
-
-    const googleEmail = params.get("google_email");
-    const googleName = params.get("google_name");
-    const googleAvatar = params.get("google_avatar");
-
-    const yandexId = params.get("yandex_id");
-    const yandexEmail = params.get("yandex_email");
-    const yandexName = params.get("yandex_name");
-
-    if (googleEmail || yandexEmail) {
-        return {
-            id: googleEmail || yandexId || "unknown",
-            name: googleName || yandexName || "Новый пользователь",
-            role: "active",
-            tariff: null,
-            avatarUrl: googleAvatar || "",
-            faceitNickname: googleName || yandexName || "",
-        };
-    }
-
-    return initialUser;
-};
-
 const Lab: React.FC = () => {
-    const [user, setUser] = useState<User>(() => buildUserFromQuery());
+    const [user, setUser] = useState<User>(initialUser);
 
-    // После того как забрали данные из query, очищаем URL
+    // Обработка результатов OAuth: только флаги привязки, профиль не трогаем
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        if (
-            params.get("google_email") ||
-            params.get("google_name") ||
-            params.get("google_avatar") ||
-            params.get("yandex_id") ||
-            params.get("yandex_email") ||
-            params.get("yandex_name")
-        ) {
-            const newQs = (() => {
-                // если будут другие параметры (faceit_code и т.п.), не теряем их
-                const copy = new URLSearchParams(params.toString());
-                copy.delete("google_email");
-                copy.delete("google_name");
-                copy.delete("google_avatar");
-                copy.delete("yandex_id");
-                copy.delete("yandex_email");
-                copy.delete("yandex_name");
-                return copy.toString();
-            })();
 
+        const googleEmail = params.get("google_email");
+        const googleName = params.get("google_name");
+        const googleAvatar = params.get("google_avatar");
+
+        const yandexId = params.get("yandex_id");
+        const yandexEmail = params.get("yandex_email");
+        const yandexName = params.get("yandex_name");
+
+        // Если что-то прилетело от Google
+        if (googleEmail || googleName || googleAvatar) {
+            setUser((prev) => ({
+                ...prev,
+                isGoogleLinked: true,
+                googleEmail: googleEmail,
+                // НИЧЕГО не меняем в name/faceitNickname/avatarUrl
+            }));
+        }
+
+        // Если что-то прилетело от Yandex
+        if (yandexId || yandexEmail || yandexName) {
+            setUser((prev) => ({
+                ...prev,
+                isYandexLinked: true,
+                yandexEmail: yandexEmail,
+                yandexId: yandexId,
+            }));
+        }
+
+        // Очищаем URL от OAuth-параметров, но не трогаем другие (faceit_code и т.п.)
+        if (
+            googleEmail ||
+            googleName ||
+            googleAvatar ||
+            yandexId ||
+            yandexEmail ||
+            yandexName
+        ) {
+            const copy = new URLSearchParams(params.toString());
+            copy.delete("google_email");
+            copy.delete("google_name");
+            copy.delete("google_avatar");
+            copy.delete("yandex_id");
+            copy.delete("yandex_email");
+            copy.delete("yandex_name");
+
+            const newQs = copy.toString();
             const newUrl =
                 window.location.pathname + (newQs ? `?${newQs}` : "");
             window.history.replaceState({}, "", newUrl);
