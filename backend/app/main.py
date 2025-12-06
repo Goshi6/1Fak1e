@@ -7,7 +7,8 @@ from app.Auth.routes import router as faceit_auth_router
 from app.Auth.routes_google import router as google_auth_router
 from app.Auth.routes_yandex import router as yandex_auth_router
 from app.Auth.routes_me import router as auth_me_router
-from app.Auth.routes_steam import router as steam_auth_router  # NEW
+from app.Auth.routes_steam import router as steam_auth_router
+from app.admin_routes import router as admin_router  # NEW
 
 print("=== APP MAIN.PY LOADED ===")
 
@@ -24,6 +25,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],  # в том числе OPTIONS
     allow_headers=["*"],
+    expose_headers=["X-Total-Count"],  # важно для react-admin пагинации
 )
 
 
@@ -36,4 +38,5 @@ app.include_router(faceit_auth_router)
 app.include_router(google_auth_router)
 app.include_router(yandex_auth_router)
 app.include_router(auth_me_router)
-app.include_router(steam_auth_router)  # NEW
+app.include_router(steam_auth_router)
+app.include_router(admin_router)  # NEW
