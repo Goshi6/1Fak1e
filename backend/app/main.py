@@ -9,7 +9,8 @@ from app.Auth.routes_yandex import router as yandex_auth_router
 from app.Auth.routes_me import router as auth_me_router
 from app.Auth.routes_steam import router as steam_auth_router
 from app.admin_routes import router as admin_router
-from app.db import init_models  # NEW
+from app.lessons_routes import router as lessons_router  # NEW
+from app.db import init_models
 
 print("=== APP MAIN.PY LOADED ===")
 
@@ -46,3 +47,4 @@ app.include_router(yandex_auth_router)
 app.include_router(auth_me_router)
 app.include_router(steam_auth_router)
 app.include_router(admin_router)
+app.include_router(lessons_router)  # NEW
