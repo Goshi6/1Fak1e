@@ -11,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db import get_async_session
 from app.models import Course, Section, Material
 
+
 router = APIRouter(
     prefix="",
     tags=["lessons"],
@@ -18,6 +19,7 @@ router = APIRouter(
 
 
 # ===== Pydantic-схемы для публичного API =====
+
 
 class MaterialPublic(BaseModel):
     id: int
@@ -27,7 +29,7 @@ class MaterialPublic(BaseModel):
     order: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class SectionPublic(BaseModel):
@@ -37,7 +39,7 @@ class SectionPublic(BaseModel):
     materials: List[MaterialPublic]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class CoursePublic(BaseModel):
@@ -46,7 +48,7 @@ class CoursePublic(BaseModel):
     description: Optional[str] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class CourseWithTheory(BaseModel):
@@ -56,10 +58,11 @@ class CourseWithTheory(BaseModel):
     sections: List[SectionPublic]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 # ===== Публичные эндпоинты =====
+
 
 @router.get("/courses", response_model=List[CoursePublic])
 async def list_public_courses(
