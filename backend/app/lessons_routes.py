@@ -104,17 +104,24 @@ async def get_course_theory(
         # Для каждой секции загружаем материалы
         result_materials = await session.execute(
             select(Material)
-                .where(Material.section_id == section.id, Material.is_published == True)  # noqa: E712
+                .where(
+                    Material.section_id == section.id,
+                    Material.is_published == True,  # noqa: E712
+                )
                 .order_by(Material.order, Material.id)
         )
-        materials = result_materials.scalars().all()
+        material_models = result_materials.scalars().all()
+
+        materials_public = [
+            MaterialPublic.from_orm(m) for m in material_models
+        ]
 
         sections_public.append(
             SectionPublic(
                 id=section.id,
                 type=section.type,
                 title=section.title,
-                materials=materials,
+                materials=materials_public,
             )
         )
 
