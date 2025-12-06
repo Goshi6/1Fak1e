@@ -26,3 +26,17 @@ async_session_maker = sessionmaker(
 async def get_async_session() -> AsyncSession:
     async with async_session_maker() as session:
         yield session
+
+# app/db.py (НИЖЕ всех объявлений)
+
+from sqlalchemy import text
+
+async def init_models():
+    """
+    Одноразовое создание таблиц по моделям.
+    В проде лучше делать через Alembic.
+    """
+    async with engine.begin() as conn:
+        # ВАЖНО: импортировать модели, чтобы они зарегистрировались в Base.metadata
+        from app import models  # noqa: F401
+        await conn.run_sync(Base.metadata.create_all)

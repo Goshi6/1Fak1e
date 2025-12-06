@@ -8,7 +8,8 @@ from app.Auth.routes_google import router as google_auth_router
 from app.Auth.routes_yandex import router as yandex_auth_router
 from app.Auth.routes_me import router as auth_me_router
 from app.Auth.routes_steam import router as steam_auth_router
-from app.admin_routes import router as admin_router  # NEW
+from app.admin_routes import router as admin_router
+from app.db import init_models  # NEW
 
 print("=== APP MAIN.PY LOADED ===")
 
@@ -23,10 +24,15 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],  # в том числе OPTIONS
+    allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["X-Total-Count"],  # важно для react-admin пагинации
+    expose_headers=["X-Total-Count"],
 )
+
+
+@app.on_event("startup")
+async def on_startup():
+    await init_models()  # создаст таблицы, если их нет
 
 
 @app.get("/health")
@@ -39,4 +45,4 @@ app.include_router(google_auth_router)
 app.include_router(yandex_auth_router)
 app.include_router(auth_me_router)
 app.include_router(steam_auth_router)
-app.include_router(admin_router)  # NEW
+app.include_router(admin_router)
