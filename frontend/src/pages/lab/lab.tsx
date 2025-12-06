@@ -64,7 +64,7 @@ const Lab: React.FC = () => {
                 const u: User = {
                     id: String(data.id),
                     name: data.name || "Пользователь",
-                    role: "active",
+                    role: "coach",
                     tariff: "plus",
                     avatarUrl: data.avatar_url || "",
                     faceitNickname: data.name || "",
